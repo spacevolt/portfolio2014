@@ -5,7 +5,6 @@ module.exports = class SiteController extends Controller
 	container: 'body'
 	id: 'Site-Container'
 	regions:
-		header: '#Site-Header'
 		main: '#Page-Container .page-wrapper'
 	template: require './templates/site'
 

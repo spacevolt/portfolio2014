@@ -17,9 +17,6 @@
         "jquery": "*"
       },
       "main": "backbone.js"
-    },
-    "jquery": {
-      "main": "jquery.js"
     }
   }
 }

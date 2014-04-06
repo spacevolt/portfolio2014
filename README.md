@@ -1,4 +1,4 @@
-# Chaplin with Controllers
+# Priscilla Gomez: Portfolio 2014
 
 ## Documentation
 * [Getting Started](#getting-started)
