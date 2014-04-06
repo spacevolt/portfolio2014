@@ -1,6 +1,5 @@
 Controller = require 'base/controller'
 
 module.exports = class HeaderController extends Controller
-	autoRender: true
+	autoRender: false
 	template: require './templates/header'
-	className: 'site-header'

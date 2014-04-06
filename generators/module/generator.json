@@ -6,7 +6,7 @@
     }
   ],
   "dependencies": [
-    {"type": "style", "name": "{{name}}"},
-    {"type": "template", "name": "{{name}}"}
+    {"type": "style", "name": "{{name}}", "parentPath": "{{parentPath}}/styles"},
+    {"type": "template", "name": "{{name}}", "parentPath": "{{parentPath}}/templates"}
   ]
 }
