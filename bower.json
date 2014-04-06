@@ -6,7 +6,7 @@
     "chaplin": "~1.0.0",
     "console-polyfill": "~0.1.0",
     "lodash": "~2.4.0",
-    "jquery": "~1.9.1",
+    "jquery": "*",
     "normalize-css": "~2.1.2",
     "h5bp-helpers": "~0.1.0"
   },
@@ -14,7 +14,7 @@
     "backbone": {
       "dependencies": {
         "lodash": "*",
-        "jquery": "~1.9.1"
+        "jquery": "*"
       },
       "main": "backbone.js"
     },
