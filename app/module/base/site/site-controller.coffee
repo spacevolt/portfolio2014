@@ -5,13 +5,12 @@ module.exports = class SiteController extends Controller
 	container: 'body'
 	id: 'Site-Container'
 	regions:
+		header: 'nav.header'
 		main: '#Page-Container .page-wrapper'
+		footer: 'footer'
 	template: require './templates/site'
 
 	resize: ->
-		headerH = @$('#Site-Header').outerHeight()
 		winH = $(window).height()
-
-		contentH = winH - headerH
-
+		contentH = winH
 		@$('#Page-Container').css 'height', contentH
