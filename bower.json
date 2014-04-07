@@ -8,7 +8,8 @@
     "lodash": "~2.4.0",
     "jquery": "*",
     "normalize-css": "~2.1.2",
-    "h5bp-helpers": "~0.1.0"
+    "h5bp-helpers": "~0.1.0",
+    "jquery.transit": "*"
   },
   "overrides": {
     "backbone": {
@@ -17,6 +18,11 @@
         "jquery": "*"
       },
       "main": "backbone.js"
+    },
+    "jquery.transit": {
+      "dependencies": {
+        "jquery": "*"
+      }
     }
   }
 }
