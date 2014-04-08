@@ -23,9 +23,11 @@
 
 #Page-Container
 	overflow: hidden
-	background-color: #edead0
+	// background-color: #edead0
 	.page-wrapper
 		position: relative
+		padding-top: $nav-height
+		padding-bottom: $footer-height
 		width: 100%
 		height: 100%
 
@@ -33,6 +35,10 @@
  *  Nav Container Styles
  */
 nav.header
+	position: absolute
+	top: 0
+	left: 0
+	width: 100%
 	height: 0
 
 /***
