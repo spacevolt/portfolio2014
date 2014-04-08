@@ -11,4 +11,5 @@ module.exports = class PortfoliosAssembler extends Assembler
 		@reuse 'menu', Menu, region: 'footer'
 
 	index: ->
-		@carousel = new Portfolio region: 'main'
+		@carousel = new Portfolio
+			region: 'main'
