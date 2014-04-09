@@ -10,6 +10,8 @@ module.exports = class PortfoliosAssembler extends Assembler
 		@reuse 'header', Header, region: 'header'
 		@reuse 'menu', Menu, region: 'footer'
 
-	index: ->
+	index: (options)->
+		# if options.portfolio is about, call up the about page
+		# if options.portfolio is blank, pass in blank index
 		@carousel = new Portfolio
 			region: 'main'

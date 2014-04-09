@@ -1,0 +1,21 @@
+{
+	"projects": [{
+		"title": "project01",
+		"keyart": "/project01/keyart01.jpg",
+		"logo": "/project01/logo01.jpg",
+		"copy01": "Client01",
+		"copy02": "Project01",
+		"copy03": ".MicroSite",
+		"color": "#7f642b",
+		"project": "/data/project01.json"
+	},{
+		"title": "project02",
+		"keyart": "/project01/keyart01.jpg",
+		"logo": "/project01/logo01.jpg",
+		"copy01": "Client02",
+		"copy02": "Project02",
+		"copy03": ".Platform",
+		"color": "#001b56",
+		"project": "/data/project02.json"
+	}]
+}

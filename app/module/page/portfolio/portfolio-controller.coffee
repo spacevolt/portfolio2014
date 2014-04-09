@@ -9,7 +9,7 @@ module.exports = class PortfolioController extends Controller
 		console.log 'PortfolioController Attached'
 
 	resize: ->
-		# resize carousel strip
+		# resize carousel striper
 		# resize project containers
 		# reposition project containers
 
