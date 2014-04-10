@@ -4,6 +4,8 @@ Header = require 'module/base/header/header-controller'
 Menu = require 'module/base/menu/menu-controller'
 Portfolio = require 'module/page/portfolio/portfolio-controller'
 
+portfolioData = require 'util/data'
+
 module.exports = class PortfoliosAssembler extends Assembler
 	beforeAction: ->
 		super
