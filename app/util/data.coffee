@@ -24,16 +24,18 @@ DataManager = class DataUtil
 	__retrievePortfolio: ->
 		url = @portfolioURL || "data/pgomez.json"
 		options =
+			context: @
 			receiver: @__retrievedPortfolio
 			complete: @__retrievedPortfolio
 			data: [{
 				url: url
 				}]
 		loader.load options
+
 	__retrievedPortfolio: (data)->
 		# Data receiver for portfolio
 		@portfolio = data
-		console.log @
+		console.log '1', @
 		
 dataManager = new SingletonWrapper
 module.exports = dataManager.getInstance()

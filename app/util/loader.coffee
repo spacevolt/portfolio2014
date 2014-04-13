@@ -1,10 +1,16 @@
+#***[ARRAY REMOVE ELEMENT]
+#*************************
+Array.prototype.remove = (from, to)->
+	rest = @slice((to or from) + 1 or @length)
+	@length = if from < 0 then @length + from else from
+	@push.apply @, rest
+
 module.exports = class Loader
 	loader: null
 	loadCount: 0
 	loadInProgress: false
 
 	load: (options)->
-		@loader = null
 		# receiver is handler which receives AJAXed data
 		# complete is handler fired when all datakeys have returned data
 		# data is an array of data objects and where to get them
@@ -18,13 +24,12 @@ module.exports = class Loader
 				dataType: 'json'
 				completed: false
 				}]
-		@loader.push _.merge {}, defaultOptions, options
-		currLoader = @loader[@loader.length-1]
-		@__loadAllDataInOrder()
+		options = _.merge defaultOptions, options
+		@loader.push options
+		@__loadAllDataInOrder() if !@loadInProgress
 
 	__loadAllDataInOrder: (data, counter)->
 		loader = @loader[0]
-
 		if typeof counter is 'number'
 			@loadCount++
 			if @loadCount is loader.data.length
@@ -34,6 +39,10 @@ module.exports = class Loader
 					@loadCount = 0
 					return undefined
 				else
+					@loader.remove 0
+					@loadInProgress = false
+					@loadCount = 0
+					@__loadAllDataInOrder()
 					#remove the first entry of @loader
 					#recurse this function
 			else
