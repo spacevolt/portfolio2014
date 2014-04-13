@@ -28,7 +28,10 @@ module.exports = class PortfolioController extends Controller
 		# bind keyboard hotkeys (arrows)
 
 	__appendProjectSlides: ->
-		slides = []
-		console.log @projects
-		# for project, idx in @projects
-		# 	@slides.push new Project modelOptions: project.
+		@slides = []
+		for project in @portfolio.projects
+			slide = new Project
+				container: '.project-wrapper'
+				modelOptions: project
+			@slides.push slide
+		console.log @slides
