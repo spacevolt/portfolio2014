@@ -1,4 +1,4 @@
-Loader = require 'util/loader'
+Loader = require 'util/dataloader'
 loader = new Loader
 
 SingletonWrapper = class DataManagerSingleton
