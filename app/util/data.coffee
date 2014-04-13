@@ -8,6 +8,8 @@ SingletonWrapper = class DataManagerSingleton
 
 DataManager = class DataUtil
 	portfolio: null
+	projects: null
+	numProjects: null
 	ready: null
 	portfolioURL: null
 
@@ -17,7 +19,8 @@ DataManager = class DataUtil
 		@__initialize()
 
 	__initialize: ->
-		@project = null
+		@portfolio = null
+		@projects = null
 		@ready = null
 		@__retrievePortfolio()
 
@@ -35,7 +38,28 @@ DataManager = class DataUtil
 	__retrievedPortfolio: (data)->
 		# Data receiver for portfolio
 		@portfolio = data
-		console.log '1', @
+		@numProjects = @portfolio.projects.length
+		@__retrieveProjects()
+
+	__retrieveProjects: ->
+		@projects = []
+		projectUrls = @__getProjectUrls()
+		data = []
+		for url in projectUrls
+			data.push {url: url}
+		options =
+			context: @
+			receiver: @__retrievedProject
+			complete: @__retrievedProject
+			data: data
+		loader.load options
+	__retrievedProject: (data)->
+		@projects.push data
+	__getProjectUrls: ->
+		urls = []
+		for project in @portfolio.projects
+			urls.push project.jsonUrl
+		urls
 		
 dataManager = new SingletonWrapper
 module.exports = dataManager.getInstance()

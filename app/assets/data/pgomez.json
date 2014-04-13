@@ -7,7 +7,7 @@
 		"copy02": "Project01",
 		"copy03": ".MicroSite",
 		"color": "#7f642b",
-		"project": "/data/project01.json"
+		"jsonUrl": "/data/project01.json"
 	},{
 		"title": "project02",
 		"keyart": "/project01/keyart01.jpg",
@@ -16,7 +16,7 @@
 		"copy02": "Project02",
 		"copy03": ".Platform",
 		"color": "#001b56",
-		"project": "/data/project02.json"
+		"jsonUrl": "/data/project02.json"
 	},{
 		"title": "project03",
 		"keyart": "/project01/keyart01.jpg",
@@ -25,7 +25,7 @@
 		"copy02": "Project03",
 		"copy03": ".Website",
 		"color": "#001b56",
-		"project": "/data/project03.json"
+		"jsonUrl": "/data/project03.json"
 	},{
 		"title": "project04",
 		"keyart": "/project01/keyart01.jpg",
@@ -34,6 +34,6 @@
 		"copy02": "Project04",
 		"copy03": ".Website",
 		"color": "#001b56",
-		"project": "/data/project04.json"
+		"jsonUrl": "/data/project04.json"
 	}]
 }

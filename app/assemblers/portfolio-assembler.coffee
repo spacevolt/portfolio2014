@@ -17,3 +17,5 @@ module.exports = class PortfoliosAssembler extends Assembler
 		# if options.portfolio is blank, pass in blank index
 		@carousel = new Portfolio
 			region: 'main'
+			portfolio: portfolioData.portfolio
+			projects: portfolioData.projects

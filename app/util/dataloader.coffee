@@ -5,7 +5,7 @@ Array.prototype.remove = (from, to)->
 	@length = if from < 0 then @length + from else from
 	@push.apply @, rest
 
-module.exports = class Loader
+module.exports = class DataLoader
 	loader: null
 	loadCount: 0
 	loadInProgress: false
@@ -54,6 +54,7 @@ module.exports = class Loader
 		else
 			loader.receiver.call loader.context, data
 			@loadInProgress = false
+			@__loadNext()
 
 	__requestCompleted: ->
 		@loader.remove 0
