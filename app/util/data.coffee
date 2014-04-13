@@ -1,3 +1,4 @@
+ev = require 'util/events'
 Loader = require 'util/dataloader'
 loader = new Loader
 
@@ -7,6 +8,7 @@ SingletonWrapper = class DataManagerSingleton
 		window.pgomez.data = window.pgomez.data || new DataManager
 
 DataManager = class DataUtil
+	_.extend @prototype, Chaplin.EventBroker
 	portfolio: null
 	projects: null
 	numProjects: null
@@ -55,6 +57,9 @@ DataManager = class DataUtil
 		loader.load options
 	__retrievedProject: (data)->
 		@projects.push data
+		if @projects.length is @portfolio.projects.length
+			@ready = true
+			@publishEvent ev.mediator.data.ready
 	__getProjectUrls: ->
 		urls = []
 		for project in @portfolio.projects

@@ -22,6 +22,9 @@ inputEvents =
 		blur : 'window:blur' # Fires when window loses focus
 		focus : 'window:focus' # Fires when window gains focus
 
+		data:
+			ready: 'data:ready' # Fires when the data is ready
+
 		view:
 			appended: 'view:append' # Fires when a view has been appended to the DOM
 
