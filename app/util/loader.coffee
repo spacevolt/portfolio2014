@@ -22,35 +22,16 @@ module.exports = class Loader
 			data: [{
 				url: undefined
 				dataType: 'json'
-				completed: false
 				}]
 		options = _.merge defaultOptions, options
 		@loader.push options
 		@__loadAllDataInOrder() if !@loadInProgress
 
 	__loadAllDataInOrder: (data, counter)->
-		loader = @loader[0]
-		if typeof counter is 'number'
-			@loadCount++
-			if @loadCount is loader.data.length
-				loader.complete.call loader.context, data
-				if @loader.length <= 1
-					@loader = null
-					@loadCount = 0
-					return undefined
-				else
-					@loader.remove 0
-					@loadInProgress = false
-					@loadCount = 0
-					@__loadAllDataInOrder()
-					#remove the first entry of @loader
-					#recurse this function
-			else
-				loader.receiver.call loader.context, data
-				@loadInProgress = false
-
 		return if @loadInProgress
-
+		@__loadNext()
+	__loadNext: ->
+		loader = @loader[0]
 		@loadInProgress = true
 		count = @loadCount
 		if !loader.data[count].url
@@ -60,4 +41,26 @@ module.exports = class Loader
 			url: loader.data[count].url
 			dataType: loader.data[count].dataType
 			success: (data)=>
-				@__loadAllDataInOrder data, count
+				@__dataLoaded data, count
+	__dataLoaded: (data, counter)->
+		loader = @loader[0]
+		@loadCount++
+		if @loadCount is loader.data.length
+			loader.complete.call loader.context, data
+			if @loader.length <= 1
+				@__allRequestsCompleted()
+			else
+				@__requestCompleted()
+		else
+			loader.receiver.call loader.context, data
+			@loadInProgress = false
+
+	__requestCompleted: ->
+		@loader.remove 0
+		@loadInProgress = false
+		@loadCount = 0
+		@__loadAllDataInOrder()
+	__allRequestsCompleted: ->
+		@loader = null
+		@loadCount = 0
+		@loadInProgress = false
