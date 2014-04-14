@@ -1,8 +1,8 @@
 {
 	"projects": [{
 		"title": "project01",
-		"keyart": "/project01/keyart01.jpg",
-		"logo": "/project01/logo01.jpg",
+		"keyart": "/images/project01/keyart01.jpg",
+		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client01",
 		"copy02": "Project01",
 		"copy03": ".MicroSite",
@@ -10,8 +10,8 @@
 		"jsonUrl": "/data/project01.json"
 	},{
 		"title": "project02",
-		"keyart": "/project01/keyart01.jpg",
-		"logo": "/project01/logo01.jpg",
+		"keyart": "/images/project01/keyart01.jpg",
+		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client02",
 		"copy02": "Project02",
 		"copy03": ".Platform",
@@ -19,8 +19,8 @@
 		"jsonUrl": "/data/project02.json"
 	},{
 		"title": "project03",
-		"keyart": "/project01/keyart01.jpg",
-		"logo": "/project01/logo01.jpg",
+		"keyart": "/images/project01/keyart01.jpg",
+		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client03",
 		"copy02": "Project03",
 		"copy03": ".Website",
@@ -28,8 +28,8 @@
 		"jsonUrl": "/data/project03.json"
 	},{
 		"title": "project04",
-		"keyart": "/project01/keyart01.jpg",
-		"logo": "/project01/logo01.jpg",
+		"keyart": "/images/project01/keyart01.jpg",
+		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client04",
 		"copy02": "Project04",
 		"copy03": ".Website",
