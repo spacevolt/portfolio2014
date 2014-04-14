@@ -29,6 +29,7 @@ resizer =
 		cH = $container.outerHeight()
 		top = (cH-eH)/2
 
+		$el.css 'margin-top': ''
 		$el.css 'margin-top': top
 
 module.exports = resizer

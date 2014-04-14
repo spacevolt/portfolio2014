@@ -7,7 +7,7 @@ $.expr.cacheLength = 1
 # Initialize the application on DOM ready event.
 $ ->
 	new Application {
-		title: 'Brunch example application',
+		title: 'Priscilla Gomez',
 		controllerSuffix: '-assembler',
 		controllerPath: 'assemblers/',
 		routes,
