@@ -4,6 +4,7 @@ Project = require './project/project-controller'
 module.exports = class PortfolioController extends Controller
 	autoRender: true
 	slides: null
+	currentIndex: 0
 	className: 'portfolio-carousel'
 	template: require './templates/portfolio'
 
@@ -13,6 +14,7 @@ module.exports = class PortfolioController extends Controller
 		@projects = @options.projects
 		@__appendProjectSlides()
 		@resize()
+		@__slideChanged()
 
 	slideW: null
 	slideH: null
@@ -47,3 +49,13 @@ module.exports = class PortfolioController extends Controller
 				container: '.project-wrapper'
 				modelOptions: project
 			@slides.push slide
+	__slideChanged: ->
+		return if !@slides
+		totalSlides = @__padDigits @slides.length
+		currentSlide = @__padDigits @currentIndex+1
+		$('.counter-current').html currentSlide
+		$('.counter-total').html totalSlides
+
+	__padDigits: (num)->
+		padding = if num < 10 then '0' else ''
+		padding+num
