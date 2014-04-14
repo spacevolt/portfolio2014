@@ -1,5 +1,7 @@
 Controller = require 'base/controller'
 
+resizer = require 'util/resizer'
+
 module.exports = class ProjectController extends Controller
 	autoRender: true
 	className: 'project-slide'
@@ -9,3 +11,6 @@ module.exports = class ProjectController extends Controller
 		@slideClass = 'slide'+@model.get 'index'
 		@$el.addClass @slideClass
 		console.log @model.attributes
+
+	resize: ->
+		resizer.fitToContainer @$el.find('.keyart'), @$el.find('.keyart-wrap')
