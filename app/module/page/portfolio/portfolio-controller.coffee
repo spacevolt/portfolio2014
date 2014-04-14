@@ -32,7 +32,7 @@ module.exports = class PortfolioController extends Controller
 			slide.$el.css
 				left: slideLeft
 				width: @slideW
-			slide.$('.project-feature').css
+			slide.$el.find('.project-feature').css
 				'padding-top': slideTop
 
 	__bindHandlers: ->

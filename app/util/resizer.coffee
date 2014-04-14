@@ -16,10 +16,10 @@ resizer =
 
 		scaleToWidth = eR > cR
 		if scaleToWidth
-			$el.css width: cW, height: 'auto'
+			$el.css width: cW
 			@centerVertically $el, $container
 		else
-			$el.css width: 'auto', height: cH
+			$el.css height: cH
 
 	centerVertically: (el, container)->
 		$el = @__getjQueryWrapper el

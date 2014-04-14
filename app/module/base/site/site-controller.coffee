@@ -11,6 +11,7 @@ module.exports = class SiteController extends Controller
 	template: require './templates/site'
 
 	resize: ->
+		minH = 320
 		winH = $(window).height()
-		contentH = winH
-		@$('#Page-Container').css 'height', contentH
+		contentH = if winH > minH then winH else minH
+		@$el.css 'height', contentH
