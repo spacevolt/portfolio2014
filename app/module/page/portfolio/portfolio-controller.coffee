@@ -18,8 +18,8 @@ module.exports = class PortfolioController extends Controller
 	slideH: null
 	resize: ->
 		return undefined if !@portfolio or !@slides
-		@slideW = @$('.portfolio-carousel').outerWidth()
-		@slideH = @$('.portfolio-carousel').outerHeight()
+		@slideW = @$el.outerWidth()
+		@slideH = @$el.outerHeight()
 		
 		wrapperW = @slideW * (@portfolio.projects.length)
 		@$('.project-wrapper').css width: wrapperW
