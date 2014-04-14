@@ -1,6 +1,5 @@
 {
 	"projects": [{
-		"title": "project01",
 		"keyart": "/images/project01/keyart01.jpg",
 		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client01",
@@ -9,7 +8,6 @@
 		"color": "#7f642b",
 		"jsonUrl": "/data/project01.json"
 	},{
-		"title": "project02",
 		"keyart": "/images/project01/keyart01.jpg",
 		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client02",
@@ -18,7 +16,6 @@
 		"color": "#001b56",
 		"jsonUrl": "/data/project02.json"
 	},{
-		"title": "project03",
 		"keyart": "/images/project01/keyart01.jpg",
 		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client03",
@@ -27,7 +24,6 @@
 		"color": "#001b56",
 		"jsonUrl": "/data/project03.json"
 	},{
-		"title": "project04",
 		"keyart": "/images/project01/keyart01.jpg",
 		"logo": "/images/project01/logo01.jpg",
 		"copy01": "Client04",
