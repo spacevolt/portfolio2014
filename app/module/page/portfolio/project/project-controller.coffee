@@ -13,4 +13,6 @@ module.exports = class ProjectController extends Controller
 		console.log @model.attributes
 
 	resize: ->
-		resizer.fitToContainer @$el.find('.keyart'), @$el.find('.keyart-wrap')
+		$keyArt = @$el.find '.keyart'
+		$keyArtWrap = @$el.find '.keyart-wrap'
+		resizer.fitToContainer $keyArt, $keyArtWrap

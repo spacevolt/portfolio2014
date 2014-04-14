@@ -26,15 +26,15 @@ module.exports = class PortfolioController extends Controller
 
 		@__resizeSlides()
 	__resizeSlides: ->
-		slideLeft = @slideW*idx
 		slideTop = @slideH*0.08
 		for slide, idx in @slides
+			slideLeft = @slideW*idx
 			slide.$el.css
 				left: slideLeft
 				width: @slideW
 			slide.$('.project-feature').css
 				'padding-top': slideTop
-				
+
 	__bindHandlers: ->
 		# bind swipe handler (click and touch)
 		# bind keyboard hotkeys (arrows)
