@@ -12,6 +12,7 @@ module.exports = class PortfoliosAssembler extends Assembler
 		@reuse 'header', Header, region: 'header'
 
 	index: (options)->
+		@options = options
 		# if options.portfolio is about, call up the about page
 		# if options.portfolio is blank, pass in blank index
 		if portfolioData.ready
@@ -23,3 +24,11 @@ module.exports = class PortfoliosAssembler extends Assembler
 			region: 'main'
 			portfolio: portfolioData.portfolio
 			projects: portfolioData.projects
+			currentIndex: @__getCurrentSlideIndex()
+
+	__getCurrentSlideIndex: ->
+		slideIndex = 0
+		slug = @options.project
+		for project, idx in portfolioData.portfolio.projects
+			slideIndex = idx if project.slug is slug
+		slideIndex

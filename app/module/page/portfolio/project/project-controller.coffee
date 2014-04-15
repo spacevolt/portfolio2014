@@ -10,7 +10,7 @@ module.exports = class ProjectController extends Controller
 	attached: ->
 		@slideClass = 'slide'+@model.get 'index'
 		@$el.addClass @slideClass
-		console.log @model.attributes
+		# console.log @model.attributes
 
 	resize: ->
 		$keyArt = @$('.project-keyart')

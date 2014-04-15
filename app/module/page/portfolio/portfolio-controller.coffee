@@ -3,19 +3,25 @@ Project = require './project/project-controller'
 
 module.exports = class PortfolioController extends Controller
 	autoRender: true
+	portfolio: null
+	projects: null
 	slides: null
 	currentIndex: 0
 	className: 'portfolio-carousel'
 	template: require './templates/portfolio'
 
 	attached: ->
-		console.log 'PortfolioController Attached'
+		console.log 'PortfolioController Attached', @
 		@portfolio = @options.portfolio
 		@projects = @options.projects
+		@currentIndex = @options.currentIndex if typeof @options.currentIndex is 'number'
+
 		@__appendProjectSlides()
 		@resize()
-		@__slideChanged()
-
+		@__updateCounter()
+		@__slideToIndex @currentIndex
+		@__primeSlides()
+		
 	slideW: null
 	resize: ->
 		return undefined if !@portfolio or !@slides
@@ -35,6 +41,15 @@ module.exports = class PortfolioController extends Controller
 	__bindHandlers: ->
 		# bind swipe handler (click and touch)
 		# bind keyboard hotkeys (arrows)
+	__primeSlides: ->
+		setTimeout =>
+			@$('.project-wrapper').addClass 'primed'
+		, 250
+	__slideToIndex: (index)->
+		if typeof index isnt 'number'
+			return false
+		marginLeft = 0-(@slideW*index)
+		@$('.project-wrapper').css 'margin-left': marginLeft
 
 	__appendProjectSlides: ->
 		@slides = []
@@ -44,7 +59,7 @@ module.exports = class PortfolioController extends Controller
 				container: '.project-wrapper'
 				modelOptions: project
 			@slides.push slide
-	__slideChanged: ->
+	__updateCounter: ->
 		return if !@slides
 		totalSlides = @__padDigits @slides.length
 		currentSlide = @__padDigits @currentIndex+1
