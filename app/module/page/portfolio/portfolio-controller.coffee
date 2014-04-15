@@ -17,25 +17,20 @@ module.exports = class PortfolioController extends Controller
 		@__slideChanged()
 
 	slideW: null
-	slideH: null
 	resize: ->
 		return undefined if !@portfolio or !@slides
 		@slideW = @$el.outerWidth()
-		@slideH = @$el.outerHeight()
 		
 		wrapperW = @slideW * (@portfolio.projects.length)
 		@$('.project-wrapper').css width: wrapperW
 
 		@__resizeSlides()
 	__resizeSlides: ->
-		slideTop = @slideH*0.08
 		for slide, idx in @slides
 			slideLeft = @slideW*idx
 			slide.$el.css
 				left: slideLeft
 				width: @slideW
-			slide.$el.find('.project-feature').css
-				'padding-top': slideTop
 
 	__bindHandlers: ->
 		# bind swipe handler (click and touch)
