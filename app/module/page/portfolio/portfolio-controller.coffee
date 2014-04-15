@@ -16,12 +16,14 @@ module.exports = class PortfolioController extends Controller
 		@projects = @options.projects
 		@currentIndex = @options.currentIndex if typeof @options.currentIndex is 'number'
 
+		@$el.addClass 'i0'+@currentIndex
+
 		@__appendProjectSlides()
 		@resize()
 		@__updateCounter()
 		@__slideToIndex @currentIndex
 		@__primeSlides()
-		
+
 	slideW: null
 	resize: ->
 		return undefined if !@portfolio or !@slides

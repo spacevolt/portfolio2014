@@ -1,5 +1,6 @@
 transition =
 	slide: (options)->
+		console.log 'transition', options
 		current = options.current
 		upcoming = options.upcoming
 

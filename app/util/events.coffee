@@ -22,6 +22,9 @@ inputEvents =
 		blur : 'window:blur' # Fires when window loses focus
 		focus : 'window:focus' # Fires when window gains focus
 
+		assembler:
+			carouselready: 'carousel:ready' # Fires when the assembler has instantiated the carousel
+
 		data:
 			ready: 'data:ready' # Fires when the data is ready
 

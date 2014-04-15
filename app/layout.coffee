@@ -1,5 +1,6 @@
 # Layout modified to allow tansitions between pages
 transition = require "util/transition"
+ev = require 'util/events'
 
 module.exports = class Layout extends Chaplin.Layout
 	initialize: ->
@@ -7,20 +8,28 @@ module.exports = class Layout extends Chaplin.Layout
 		@subscribeEvent 'beforeControllerDispose', @beforeDisposeHandler
 		@subscribeEvent 'dispatcher:dispatch', @dispatchHandler
 		@subscribeEvent 'PageTransitionEnd', @removeAllDisposedViews
+		@subscribeEvent ev.mediator.assembler.carouselready, @setUpcomingEl
 
 	removeAllDisposedViews: (views)->
 		$('.garbage').each (index, el) ->
 			$(el).remove()
 
 	beforeDisposeHandler: (assembler)->
-		@oldViewEl = assembler.presenter?.currentUnit?.el?
+		if assembler.carousel
+			@oldViewEl = assembler.carousel.el
 	dispatchHandler: (assembler)->
-		upcomingEl = assembler.presenter?.currentUnit?.el?
+		console.log 'dispatchHandler', assembler, @oldViewEl
+		if assembler.carousel
+			upcomingEl = assembler.carousel.el
+		else return false
+
+		console.log 'dispatchHandler', @oldViewEl, assembler
+
 		if @oldViewEl
 			options =
 				current: @oldViewEl
 				upcoming: upcomingEl
-			transitionMethod = assembler.presenter.currentUnit.transition
+			transitionMethod = assembler.carousel.transition
 			# flag the old view for collection
 			$(@oldViewEl).addClass 'garbage'
 			if _.isFunction transitionMethod
@@ -31,3 +40,8 @@ module.exports = class Layout extends Chaplin.Layout
 				fn options
 		else
 			$(upcomingEl).addClass 'current'
+
+	setUpcomingEl: (assembler)->
+		@oldViewEl = assembler.carousel.el
+		upcomingEl = assembler.carousel.el
+		$(upcomingEl).addClass 'current'

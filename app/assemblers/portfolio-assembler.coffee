@@ -25,6 +25,7 @@ module.exports = class PortfoliosAssembler extends Assembler
 			portfolio: portfolioData.portfolio
 			projects: portfolioData.projects
 			currentIndex: @__getCurrentSlideIndex()
+		@publishEvent ev.mediator.assembler.carouselready, @
 
 	__getCurrentSlideIndex: ->
 		slideIndex = 0
