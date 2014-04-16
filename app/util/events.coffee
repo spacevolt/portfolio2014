@@ -1,15 +1,25 @@
 #Input strings
-device = require './device'
-touch = device.supports 'touch'
+transitionEvent = ->
+	el = document.createElement('fakeelement')
+	transitions =
+		transition: 'transitionend'
+		MSTransition: 'msTransitionEnd'
+		MozTransition: 'transitionend'
+		WebkitTransition: 'webkitTransitionEnd'
+	for prop of transitions
+		return transitions[prop] if el.style[prop] isnt undefined
 
 inputEvents =
 	# Mouse-and-Touch Events
 	all:
-		click  : 'click'
-		blur   : 'blur'
-		focus  : 'focus'
-		resize : 'resize'
-		scroll : 'scroll'
+		click   : 'click'
+		blur    : 'blur'
+		focus   : 'focus'
+		resize  : 'resize'
+		scroll  : 'scroll'
+		keydown : 'keydown'
+		keyup   : 'keyup'
+		transitionend     : transitionEvent()
 		orientationchange : 'orientationchange'
 	# Media events
 	media:

@@ -1,6 +1,8 @@
 Controller = require 'base/controller'
 Project = require './project/project-controller'
 
+ev = require 'util/events'
+
 module.exports = class PortfolioController extends Controller
 	autoRender: true
 	portfolio: null
@@ -23,6 +25,7 @@ module.exports = class PortfolioController extends Controller
 		@__updateCounter()
 		@__slideToIndex @currentIndex
 		@__primeSlides()
+		@__bindHandlers()
 
 	slideW: null
 	resize: ->
@@ -40,18 +43,56 @@ module.exports = class PortfolioController extends Controller
 				left: slideLeft
 				width: @slideW
 
+	nextProject: ->
+		return false if @currentIndex is @slides.length-1
+		@__slideToIndex @currentIndex+1
+	prevProject: ->
+		return false if @currentIndex is 0
+		@__slideToIndex @currentIndex-1
 	__bindHandlers: ->
+		$(document).on ev.all.keydown, @__keyPressed
+		$(document).on ev.all.keyup, @__keyReleased
+		$(window).on ev.all.transitionend, @__transitionEnd
 		# bind swipe handler (click and touch)
 		# bind keyboard hotkeys (arrows)
+	keylocked: false
+	lockedkey: null
+	__keyPressed: (e)=>
+		validCodes = [37,39]
+		code = e.keyCode
+		return true if @keylocked  or @sliding or !(code in validCodes)
+
+		@keylocked = true
+		@lockedkey = code
+
+		if code is 37
+			@prevProject()
+		if code is 39
+			@nextProject()
+	__keyReleased: (e)=>
+		code = e.keyCode
+		if code is @lockedkey
+			@keylocked = false
+		return true
+
+	sliding: false
 	__primeSlides: ->
 		setTimeout =>
 			@$('.project-wrapper').addClass 'primed'
 		, 250
 	__slideToIndex: (index)->
-		if typeof index isnt 'number'
-			return false
+		invalidIndex = typeof index isnt 'number'
+		outOfRange = 0 > index and index > @slides.length
+		return false if invalidIndex or outOfRange
+
+		@currentIndex = index
 		marginLeft = 0-(@slideW*index)
 		@$('.project-wrapper').css 'margin-left': marginLeft
+		@__updateCounter()
+		@sliding = true if @$('.project-wrapper').hasClass 'primed'
+	__transitionEnd: (e)=>
+		targetClass = e.target.className
+		@sliding = false if targetClass.indexOf 'project-wrapper' >= 0
 
 	__appendProjectSlides: ->
 		@slides = []
@@ -71,3 +112,9 @@ module.exports = class PortfolioController extends Controller
 	__padDigits: (num)->
 		padding = if num < 10 then '0' else ''
 		padding+num
+
+	dispose: ->
+		$(document).off ev.all.keydown
+		$(document).off ev.all.keyup
+		$(window).off ev.all.transitionend
+		super
