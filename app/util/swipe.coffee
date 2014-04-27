@@ -9,7 +9,7 @@ class Swipe
 	bind: (direction, $el, handler, context)->
 		validDirections = ["Left", "Right", "Up", "Down"]
 
-		if @__isEl(direction) or @__isJQuery(direction)
+		if _.isElement(direction) or @__isJQuery(direction)
 			[$el, handler, context] = [direction, $el, handler]
 			direction = undefined
 		else
@@ -53,16 +53,11 @@ class Swipe
 	# Helpers
 	__isJQuery: (el)->
 		el instanceof jQuery
-	__isEl: (el)->
-		if typeof HTMLElement is "object"
-			el instanceof HTMLElement
-		else
-			el and typeof el is "object" and el isnt null and el.nodeType is 1 and typeof el.nodeName is "string"
 	__capitalize: (str)->
 		str.charAt(0).toUpperCase() + str.slice(1)
 
 	__validateParams: ($el, handler)->
-		if @__isEl $el
+		if _.isElement $el
 			$el = $($el)
 		if not @__isJQuery $el
 			throw new Error "Swipe.__validateParams: $el must be a dom element or jQuery object"

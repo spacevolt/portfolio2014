@@ -54,6 +54,8 @@ module.exports = class PortfolioController extends Controller
 		$(document).on ev.all.keydown, @__keyPressed
 		$(document).on ev.all.keyup, @__keyReleased
 		$(window).on ev.all.transitionend, @__transitionEnd
+		@$el.on ev.all.down, @__mouseDown
+		@$el.on ev.all.up, @__mouseUp
 		swipe.bind @$el.get(0), ->
 			console.log 'foobar'
 		# bind swipe handler (click and touch)
@@ -77,6 +79,11 @@ module.exports = class PortfolioController extends Controller
 		if code is @lockedkey
 			@keylocked = false
 		return true
+
+	__mouseDown: =>
+		@$el.addClass 'mousedown'
+	__mouseUp: =>
+		@$el.removeClass 'mousedown'
 
 	sliding: false
 	__primeSlides: ->

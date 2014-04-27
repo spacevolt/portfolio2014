@@ -17,6 +17,8 @@ inputEvents =
 		focus   : 'focus'
 		resize  : 'resize'
 		scroll  : 'scroll'
+		down    : 'mousedown'
+		up      : 'mouseup'
 		keydown : 'keydown'
 		keyup   : 'keyup'
 		transitionend     : transitionEvent()
