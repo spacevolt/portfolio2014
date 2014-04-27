@@ -5,6 +5,9 @@ class Swipe
 		handler: null
 		context: window
 
+	constructor: ->
+		@__bindMouse = _.once @__bindMouseSwipe
+
 	swipeHandlers: null
 	bind: (direction, $el, handler, context)->
 		validDirections = ["Left", "Right", "Up", "Down"]
@@ -65,7 +68,9 @@ class Swipe
 			throw new Error "Swipe.__validateParams: handler must be a function"
 		$el		
 
-	dispose: ->
+	unbindAll: ->
 		# ...
-
-module.exports = new Swipe
+		
+window.PGomez = window.PGomez || {}
+window.PGomez.swipe = window.PGomez.swipe || new Swipe
+module.exports = window.PGomez.swipe

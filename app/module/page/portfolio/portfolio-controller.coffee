@@ -56,7 +56,7 @@ module.exports = class PortfolioController extends Controller
 		$(window).on ev.all.transitionend, @__transitionEnd
 		@$el.on ev.all.down, @__mouseDown
 		@$el.on ev.all.up, @__mouseUp
-		swipe.bind @$el.get(0), ->
+		swipe.bind @$el, ->
 			console.log 'foobar'
 		# bind swipe handler (click and touch)
 		# bind keyboard hotkeys (arrows)
