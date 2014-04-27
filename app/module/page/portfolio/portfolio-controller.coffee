@@ -1,6 +1,7 @@
 Controller = require 'base/controller'
 Project = require './project/project-controller'
 
+swipe = require 'util/swipe'
 ev = require 'util/events'
 
 module.exports = class PortfolioController extends Controller
@@ -53,6 +54,8 @@ module.exports = class PortfolioController extends Controller
 		$(document).on ev.all.keydown, @__keyPressed
 		$(document).on ev.all.keyup, @__keyReleased
 		$(window).on ev.all.transitionend, @__transitionEnd
+		swipe.bind @$el.get(0), ->
+			console.log 'foobar'
 		# bind swipe handler (click and touch)
 		# bind keyboard hotkeys (arrows)
 	keylocked: false

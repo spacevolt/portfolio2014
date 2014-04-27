@@ -18,12 +18,9 @@ module.exports = class Layout extends Chaplin.Layout
 		if assembler.carousel
 			@oldViewEl = assembler.carousel.el
 	dispatchHandler: (assembler)->
-		console.log 'dispatchHandler', assembler, @oldViewEl
 		if assembler.carousel
 			upcomingEl = assembler.carousel.el
 		else return false
-
-		console.log 'dispatchHandler', @oldViewEl, assembler
 
 		if @oldViewEl
 			options =
