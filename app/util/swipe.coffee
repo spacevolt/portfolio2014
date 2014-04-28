@@ -1,4 +1,5 @@
 class Swipe
+	namespace: 'swipeutil'
 	debounceDuration: 150
 	constructor: ->
 		@__bindMouse = _.once @__bindMouseSwipe
@@ -48,36 +49,40 @@ class Swipe
 		options = @__getOptions $el, handler, context
 
 		@[listName] = @[listName] || []
-		@[listName].push _.cloneDeep(options)
+		@[listName].push options
 		
 		@__bindMouseSwipe()
 	__getOptions: ($el, handler, context)->
 		handlerDefaults =
-			$el: window
+			$el: $(window)
 			handler: null
 			context: window
 		options = {}
-		options.$el = $el
-		options.handler = handler
+		options.$el = $el if $el
+		options.handler = handler if handler
 		options.context = context if context
-		_.merge handlerDefaults, options
-		
+		_.extend handlerDefaults, options
+
 	mouseBound: false
 	__bindMouseSwipe: ->
 		return false if @mouseBound is true
 		@mouseBound = true
-		$(window).on 'mousedown', @__mouseDown
-		$(window).on 'mouseup', @__mouseUp
-		$(window).on 'mousemove', @__mouseMove
-	__handleMouseSwipe: (directions, distances)->
+		$(window).on 'mousedown.'+@namespace, @__mouseDown
+		$(window).on 'mouseup.'+@namespace, @__mouseUp
+		$(window).on 'mousemove.'+@namespace, @__mouseMove
+	__handleMouseSwipe: (target, directions, distances)->
 		for direction in directions
-			@__executeHandlers 'Swipe' if direction
-			@__executeHandlers direction if direction
-	__executeHandlers: (direction)->
+			@__executeHandlers target, 'Swipe' if direction
+			@__executeHandlers target, direction if direction
+	__executeHandlers: (target, direction)->
 		handlers = this['handlers'+direction]
 		return undefined if _.isNull(handlers) or _.isEmpty(handlers)
 		for options in handlers
-			options.handler.call options.context
+			targetClass = options.$el.get(0).className
+			targetSelector = @__getSelector targetClass
+			targetIsEl = $(target).hasClass targetClass
+			targetIsParent = $(target).parents(targetSelector).length > 0
+			options.handler.call options.context if targetIsEl or targetIsParent
 
 	mouseIsDown: false
 	mouseDirectionX: null
@@ -131,13 +136,19 @@ class Swipe
 		distX = Math.abs(@mouseStartCoords[0]-e.pageX)
 		distY = Math.abs(@mouseStartCoords[1]-e.pageY)
 
-		@__handleMouseSwipe [directionX, directionY], [distX, distY]
+		@__handleMouseSwipe e.target, [directionX, directionY], [distX, distY]
 
 	# Helpers
 	__isJQuery: (el)->
 		el instanceof jQuery
 	__capitalize: (str)->
 		str.charAt(0).toUpperCase() + str.slice(1)
+	__getSelector: (str)->
+		classes = str.split(' ')
+		selectorStr = ''
+		for selector in classes
+			selectorStr = selectorStr+'.'+selector
+		selectorStr
 
 	__validateParams: ($el, handler)->
 		if _.isElement $el
@@ -146,10 +157,10 @@ class Swipe
 			throw new Error "Swipe.__validateParams: $el must be a dom element or jQuery object"
 		if typeof handler isnt "function"
 			throw new Error "Swipe.__validateParams: handler must be a function"
-		$el		
+		$el
 
 	unbindAll: ->
-		# ...
+		$(window).off @namespace
 
 window.PGomez = window.PGomez || {}
 window.PGomez.swipe = window.PGomez.swipe || new Swipe
