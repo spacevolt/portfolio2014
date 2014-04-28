@@ -48,7 +48,7 @@ class Swipe
 		options = @__getOptions $el, handler, context
 
 		@[listName] = @[listName] || []
-		@[listName].push _.cloneDeep options
+		@[listName].push _.cloneDeep(options)
 		
 		@__bindMouseSwipe()
 	__getOptions: ($el, handler, context)->
@@ -69,8 +69,16 @@ class Swipe
 		$(window).on 'mousedown', @__mouseDown
 		$(window).on 'mouseup', @__mouseUp
 		$(window).on 'mousemove', @__mouseMove
-	__handleMouseSwipe: ->
-		# ...
+	__handleMouseSwipe: (directions, distances)->
+		for direction in directions
+			@__executeHandlers 'Swipe' if direction
+			@__executeHandlers direction if direction
+	__executeHandlers: (direction)->
+		handlers = this['handlers'+direction]
+		return undefined if _.isNull(handlers) or _.isEmpty(handlers)
+		for options in handlers
+			options.handler.call options.context
+
 	mouseIsDown: false
 	mouseDirectionX: null
 	mouseDirectionY: null
@@ -78,12 +86,11 @@ class Swipe
 	mouseStartCoords: null
 	mouseDirectionChanged: false
 	lastCoords: null
-	__mouseStarted: (e)->
+	__mouseStart: (e)->
 		@mouseStartTime = new Date().getTime()
 		@mouseStartCoords = [e.pageX, e.pageY]
 	__mouseDown: (e)=>
-		@__mouseStarted e
-		console.log 'MOUSE DOWN'
+		@__mouseStart e
 		@mouseIsDown = true
 	__mouseMove: (e)=>
 		# Set direction flags
@@ -103,13 +110,12 @@ class Swipe
 		changedY = @mouseDirectionY and directionY and @mouseDirectionY isnt directionY
 		if changedX or changedY
 			@lastCoords = null
-			@__mouseStarted e
+			@__mouseStart e
 		else
 			@lastCoords = _.cloneDeep currCoords
 
 		@mouseDirectionX = directionX
 		@mouseDirectionY = directionY
-
 	__mouseUp: (e)=>
 		@mouseIsDown = false
 		@lastCoords = null
@@ -120,17 +126,12 @@ class Swipe
 
 		mouseEndTime = new Date().getTime()
 		mouseTime = mouseEndTime-@mouseStartTime
-		
-		mouseEndCoords = [e.pageX, e.pageY]
-		mouseXdistance = Math.abs(@mouseStartCoords[0]-mouseEndCoords[0])
-		mouseYdistance = Math.abs(@mouseStartCoords[1]-mouseEndCoords[1])
-
-		console.log 'MOUSE UP', directionX, directionY
-
 		return undefined if mouseTime < @debounceDuration
 
-	downCoords: null
-	upCoords: null
+		distX = Math.abs(@mouseStartCoords[0]-e.pageX)
+		distY = Math.abs(@mouseStartCoords[1]-e.pageY)
+
+		@__handleMouseSwipe [directionX, directionY], [distX, distY]
 
 	# Helpers
 	__isJQuery: (el)->
