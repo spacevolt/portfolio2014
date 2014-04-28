@@ -50,16 +50,22 @@ module.exports = class PortfolioController extends Controller
 	prevProject: ->
 		return false if @currentIndex is 0
 		@__slideToIndex @currentIndex-1
+		
 	__bindHandlers: ->
-		$(document).on ev.all.keydown, @__keyPressed
-		$(document).on ev.all.keyup, @__keyReleased
+		@__bindKeyboard()
+		@__bindCursor()
+		# unlock transition events
 		$(window).on ev.all.transitionend, @__transitionEnd
-		@$el.on ev.all.down, @__mouseDown
-		@$el.on ev.all.up, @__mouseUp
+		# bind swipe handler (click and touch)
 		swipe.bind @$el, ->
 			console.log 'foobar'
-		# bind swipe handler (click and touch)
-		# bind keyboard hotkeys (arrows)
+	__bindKeyboard: ->
+		$(document).on ev.all.keydown, @__keyPressed
+		$(document).on ev.all.keyup, @__keyReleased
+	__bindCursor: ->
+		@$el.on ev.all.down, @__mouseDown
+		@$el.on ev.all.up, @__mouseUp
+
 	keylocked: false
 	lockedkey: null
 	__keyPressed: (e)=>

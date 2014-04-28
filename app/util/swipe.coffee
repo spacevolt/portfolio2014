@@ -1,21 +1,18 @@
 class Swipe
-	handlerDefaults:
-		id: null
-		el: window
-		handler: null
-		context: window
-
+	debounceDuration: 150
 	constructor: ->
 		@__bindMouse = _.once @__bindMouseSwipe
 
-	swipeHandlers: null
+	handlersSwipe: null
 	bind: (direction, $el, handler, context)->
 		validDirections = ["Left", "Right", "Up", "Down"]
 
+		# direction parameter is optional, properly assign arguments
 		if _.isElement(direction) or @__isJQuery(direction)
 			[$el, handler, context] = [direction, $el, handler]
 			direction = undefined
 		else
+			# Delegate to directional binders if direction parameter provided
 			direction = @__capitalize direction.toLowerCase()
 			if !(direction in validDirections)
 				throw new Error "Swipe.bind : direction must be right, left, up, or down"
@@ -23,35 +20,117 @@ class Swipe
 			this[method]($el, handler, context)
 			return true
 
-		$el = @__validateParams $el, handler
-		console.log direction, $el, handler, context
+		# No direction parameter passed in, assign handler to all swipes
+		direction = "Swipe"
+		@__registerHandlers direction, $el, handler, context
 
-	leftHandlers: null
+	handlersLeft: null
 	swipeLeft: ($el, handler, context)->
-		$el = @__validateParams $el, handler
-	rightHandlers: null
+		direction = "Left"
+		@__registerHandlers direction, $el, handler, context
+	handlersRight: null
 	swipeRight: ($el, handler, context)->
-		$el = @__validateParams $el, handler
-	upHandlers: null
+		direction = "Right"
+		@__registerHandlers direction, $el, handler, context
+	handlersUp: null
 	swipeUp: ($el, handler, context)->
-		$el = @__validateParams $el, handler
-	downHandlers: null
+		direction = "Up"
+		@__registerHandlers direction, $el, handler, context
+	handlersDown: null
 	swipeDown: ($el, handler, context)->
-		$el = @__validateParams $el, handler
+		direction = "Down"
+		@__registerHandlers direction, $el, handler, context
 
+	__registerHandlers: (direction, $el, handler, context)->
+		listPrefix = "handlers"
+		listName = listPrefix+direction
+		$el = @__validateParams $el, handler
+		options = @__getOptions $el, handler, context
+
+		@[listName] = @[listName] || []
+		@[listName].push _.cloneDeep options
+		
+		@__bindMouseSwipe()
+	__getOptions: ($el, handler, context)->
+		handlerDefaults =
+			$el: window
+			handler: null
+			context: window
+		options = {}
+		options.$el = $el
+		options.handler = handler
+		options.context = context if context
+		_.merge handlerDefaults, options
+		
+	mouseBound: false
 	__bindMouseSwipe: ->
+		return false if @mouseBound is true
+		@mouseBound = true
+		$(window).on 'mousedown', @__mouseDown
+		$(window).on 'mouseup', @__mouseUp
+		$(window).on 'mousemove', @__mouseMove
+	__handleMouseSwipe: ->
 		# ...
-	__handleSwipe: ->
-		# ...
+	mouseIsDown: false
+	mouseDirectionX: null
+	mouseDirectionY: null
+	mouseStartTime: null
+	mouseStartCoords: null
+	mouseDirectionChanged: false
+	lastCoords: null
+	__mouseStarted: (e)->
+		@mouseStartTime = new Date().getTime()
+		@mouseStartCoords = [e.pageX, e.pageY]
+	__mouseDown: (e)=>
+		@__mouseStarted e
+		console.log 'MOUSE DOWN'
+		@mouseIsDown = true
+	__mouseMove: (e)=>
+		# Set direction flags
+		return undefined if @mouseIsDown is false
+		currCoords = [e.pageX, e.pageY]
+		startCoords = if @lastCoords then @lastCoords else @mouseStartCoords
+
+		diffX = startCoords[0]-currCoords[0]
+		diffY = startCoords[1]-currCoords[1]
+
+		directionX = 'Left' if diffX > 0
+		directionX = 'Right' if diffX < 0
+		directionY = 'Up' if diffY > 0
+		directionY = 'Down' if diffY < 0
+
+		changedX = @mouseDirectionX and directionX and @mouseDirectionX isnt directionX
+		changedY = @mouseDirectionY and directionY and @mouseDirectionY isnt directionY
+		if changedX or changedY
+			@lastCoords = null
+			@__mouseStarted e
+		else
+			@lastCoords = _.cloneDeep currCoords
+
+		@mouseDirectionX = directionX
+		@mouseDirectionY = directionY
+
+	__mouseUp: (e)=>
+		@mouseIsDown = false
+		@lastCoords = null
+		directionX = @mouseDirectionX
+		directionY = @mouseDirectionY
+		@mouseDirectionX = null
+		@mouseDirectionY = null
+
+		mouseEndTime = new Date().getTime()
+		mouseTime = mouseEndTime-@mouseStartTime
+		
+		mouseEndCoords = [e.pageX, e.pageY]
+		mouseXdistance = Math.abs(@mouseStartCoords[0]-mouseEndCoords[0])
+		mouseYdistance = Math.abs(@mouseStartCoords[1]-mouseEndCoords[1])
+
+		console.log 'MOUSE UP', directionX, directionY
+
+		return undefined if mouseTime < @debounceDuration
 
 	downCoords: null
 	upCoords: null
-	__mouseDownHandler: ->
-		# ...
-	__mouseMoveHandler: ->
-		# ...
-	__mouseUpHandler: ->
-		# ...
 
 	# Helpers
 	__isJQuery: (el)->
@@ -70,7 +149,7 @@ class Swipe
 
 	unbindAll: ->
 		# ...
-		
+
 window.PGomez = window.PGomez || {}
 window.PGomez.swipe = window.PGomez.swipe || new Swipe
 module.exports = window.PGomez.swipe
