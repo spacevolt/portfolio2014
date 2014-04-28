@@ -8,6 +8,15 @@ transitionEvent = ->
 		WebkitTransition: 'webkitTransitionEnd'
 	for prop of transitions
 		return transitions[prop] if el.style[prop] isnt undefined
+animationEvent = ->
+	el = document.createElement('fakeelement')
+	animations =
+		animation: 'animationend'
+		MSAnimation: 'msAnimationEnd'
+		OAnimation: 'oanimationend'
+		WebkitAnimation: 'webkitAnimationEnd'
+	for prop of animations
+		return animations[prop] if el.style[prop] isnt undefined
 
 inputEvents =
 	# Mouse-and-Touch Events
@@ -22,6 +31,7 @@ inputEvents =
 		keydown : 'keydown'
 		keyup   : 'keyup'
 		transitionend     : transitionEvent()
+		animationend      : animationEvent()
 		orientationchange : 'orientationchange'
 	# Media events
 	media:

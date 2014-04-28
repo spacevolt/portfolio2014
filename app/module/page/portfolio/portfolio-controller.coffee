@@ -45,17 +45,30 @@ module.exports = class PortfolioController extends Controller
 				width: @slideW
 
 	nextProject: ->
-		return false if @currentIndex is @slides.length-1
+		if @currentIndex is @slides.length-1
+			@lastSlide()
+			return false
+
 		@__slideToIndex @currentIndex+1
 	prevProject: ->
-		return false if @currentIndex is 0
+		if @currentIndex is 0
+			@firstSlide()
+			return false
+
 		@__slideToIndex @currentIndex-1
+	firstSlide: ->
+		@$('.project-wrapper').addClass 'first-slide'
+		@sliding = true
+	lastSlide: ->
+		@$('.project-wrapper').addClass 'last-slide'
+		@sliding = true
 
 	__bindHandlers: ->
 		@__bindKeyboard()
 		@__bindCursor()
 		# unlock transition events
 		$(window).on ev.all.transitionend, @__transitionEnd
+		$(window).on ev.all.animationend, @__transitionEnd
 		# bind swipe handler (click and touch)
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @
@@ -110,7 +123,9 @@ module.exports = class PortfolioController extends Controller
 		@sliding = true if @$('.project-wrapper').hasClass 'primed'
 	__transitionEnd: (e)=>
 		targetClass = e.target.className
-		@sliding = false if targetClass.indexOf 'project-wrapper' >= 0
+		if targetClass.indexOf 'project-wrapper' >= 0
+			@sliding = false
+			@$('.project-wrapper').removeClass 'first-slide last-slide'
 
 	__appendProjectSlides: ->
 		@slides = []
