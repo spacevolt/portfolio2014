@@ -3,6 +3,7 @@ class Swipe
 	debounceDuration: 150
 	constructor: ->
 		@__bindMouse = _.once @__bindMouseSwipe
+		@__bindTouch = _.once @__bindTouchSwipe
 
 	handlersSwipe: null
 	bind: (direction, $el, handler, context)->
@@ -51,7 +52,8 @@ class Swipe
 		@[listName] = @[listName] || []
 		@[listName].push options
 		
-		@__bindMouseSwipe()
+		@__bindMouse()
+		@__bindTouch()
 	__getOptions: ($el, handler, context)->
 		handlerDefaults =
 			$el: $(window)
@@ -63,6 +65,7 @@ class Swipe
 		options.context = context if context
 		_.extend handlerDefaults, options
 
+	# Mousey logic
 	mouseBound: false
 	__bindMouseSwipe: ->
 		return false if @mouseBound is true
@@ -70,7 +73,7 @@ class Swipe
 		$(window).on 'mousedown.'+@namespace, @__mouseDown
 		$(window).on 'mouseup.'+@namespace, @__mouseUp
 		$(window).on 'mousemove.'+@namespace, @__mouseMove
-	__handleMouseSwipe: (target, directions, distances)->
+	__handleMouseSwipe: (target, directions)->
 		for direction in directions
 			@__executeHandlers target, 'Swipe' if direction
 			@__executeHandlers target, direction if direction
@@ -133,10 +136,39 @@ class Swipe
 		mouseTime = mouseEndTime-@mouseStartTime
 		return undefined if mouseTime < @debounceDuration
 
-		distX = Math.abs(@mouseStartCoords[0]-e.pageX)
-		distY = Math.abs(@mouseStartCoords[1]-e.pageY)
+		# distX = Math.abs(@mouseStartCoords[0]-e.pageX)
+		# distY = Math.abs(@mouseStartCoords[1]-e.pageY)
 
-		@__handleMouseSwipe e.target, [directionX, directionY], [distX, distY]
+		@__handleMouseSwipe e.target, [directionX, directionY]
+
+	# Touchy Logic
+	touchBound: false
+	__bindTouchSwipe: ->
+		return false if @touchBound is true
+		@touchBound = true
+		console.log '__bindTouchSwipe'
+		$(window).on 'touchstart.'+@namespace, @__touchStart
+		$(window).on 'touchmove.'+@namespace, @__touchMove
+		$(window).on 'touchend.'+@namespace, @__touchEnd
+	__touchStart: (e)->
+		console.log 'touchstart', e
+	__touchMove: (e)->
+		console.log 'touchmove', e
+	__touchEnd: (e)->
+		console.log 'touchend', e
+	# __handleMouseSwipe: (target, directions, distances)->
+	# 	for direction in directions
+	# 		@__executeHandlers target, 'Swipe' if direction
+	# 		@__executeHandlers target, direction if direction
+	# __executeHandlers: (target, direction)->
+	# 	handlers = this['handlers'+direction]
+	# 	return undefined if _.isNull(handlers) or _.isEmpty(handlers)
+	# 	for options in handlers
+	# 		targetClass = options.$el.get(0).className
+	# 		targetSelector = @__getSelector targetClass
+	# 		targetIsEl = $(target).hasClass targetClass
+	# 		targetIsParent = $(target).parents(targetSelector).length > 0
+	# 		options.handler.call options.context if targetIsEl or targetIsParent
 
 	# Helpers
 	__isJQuery: (el)->
