@@ -69,7 +69,7 @@ module.exports = class PortfolioController extends Controller
 		# unlock transition events
 		$(window).on ev.all.transitionend, @__transitionEnd
 		$(window).on ev.all.animationend, @__transitionEnd
-		# bind swipe handler (click and touch)
+		# bind swipe handler : mouse and touch
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @
 		swipe.swipeLeft @$el, swipeLeft
