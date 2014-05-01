@@ -71,9 +71,18 @@ class Swipe
 		return false if @mouseBound is true
 		@mouseBound = true
 		$(window).on 'mousedown.'+@namespace, @__mouseDown
-		$(window).on 'mouseup.'+@namespace, @__mouseUp
-		$(window).on 'mousemove.'+@namespace, @__mouseMove
-	__handleMouseSwipe: (target, directions)->
+		$(window).on 'mouseup.'+@namespace, @__swipeUp
+		$(window).on 'mousemove.'+@namespace, @__swipeMove
+	# Touchy Logic
+	touchBound: false
+	__bindTouchSwipe: ->
+		return false if @touchBound is true
+		@touchBound = true
+		$(window).on 'touchstart.'+@namespace, @__swipeStart
+		$(window).on 'touchmove.'+@namespace, @__swipeMove
+		$(window).on 'touchend.'+@namespace, @__swipeUp
+
+	__handleSwipe: (target, directions)->
 		for direction in directions
 			@__executeHandlers target, 'Swipe' if direction
 			@__executeHandlers target, direction if direction
@@ -88,23 +97,27 @@ class Swipe
 			options.handler.call options.context if targetIsEl or targetIsParent
 
 	mouseIsDown: false
-	mouseDirectionX: null
-	mouseDirectionY: null
-	mouseStartTime: null
-	mouseStartCoords: null
-	mouseDirectionChanged: false
-	lastCoords: null
-	__mouseStart: (e)->
-		@mouseStartTime = new Date().getTime()
-		@mouseStartCoords = [e.pageX, e.pageY]
+	swipeDirectionX: null
+	swipeDirectionY: null
+	swipeStartTime: null
+	swipeStartCoords: null
+	swipeLastCoords: null
+	__swipeStart: (e)=>
+		e = e.originalEvent.touches[0] if e.type is "touchstart"
+		@swipeStartTime = new Date().getTime()
+		@swipeStartCoords = [e.pageX, e.pageY]
 	__mouseDown: (e)=>
-		@__mouseStart e
+		@__swipeStart e
 		@mouseIsDown = true
-	__mouseMove: (e)=>
+	__swipeMove: (e)=>
 		# Set direction flags
-		return undefined if @mouseIsDown is false
+		if e.type is "touchmove"
+			e = e.originalEvent.touches[0]
+		else if @mouseIsDown is false
+			return undefined
+
 		currCoords = [e.pageX, e.pageY]
-		startCoords = if @lastCoords then @lastCoords else @mouseStartCoords
+		startCoords = if @swipeLastCoords isnt null then @swipeLastCoords else @swipeStartCoords
 
 		diffX = startCoords[0]-currCoords[0]
 		diffY = startCoords[1]-currCoords[1]
@@ -114,61 +127,31 @@ class Swipe
 		directionY = 'Up' if diffY > 0
 		directionY = 'Down' if diffY < 0
 
-		changedX = @mouseDirectionX and directionX and @mouseDirectionX isnt directionX
-		changedY = @mouseDirectionY and directionY and @mouseDirectionY isnt directionY
+		changedX = @swipeDirectionX and directionX and @swipeDirectionX isnt directionX
+		changedY = @swipeDirectionY and directionY and @swipeDirectionY isnt directionY
 		if changedX or changedY
-			@lastCoords = null
-			@__mouseStart e
+			@swipeLastCoords = null
+			@__swipeStart e
 		else
-			@lastCoords = _.cloneDeep currCoords
+			@swipeLastCoords = _.cloneDeep currCoords
 
-		@mouseDirectionX = directionX
-		@mouseDirectionY = directionY
-	__mouseUp: (e)=>
+		@swipeDirectionX = directionX
+		@swipeDirectionY = directionY
+	__swipeUp: (e)=>
+		target = e.target
+		e = e.originalEvent.touches[0] if e.type is "touchend"
 		@mouseIsDown = false
-		@lastCoords = null
-		directionX = @mouseDirectionX
-		directionY = @mouseDirectionY
-		@mouseDirectionX = null
-		@mouseDirectionY = null
+		@swipeLastCoords = null
+		directionX = @swipeDirectionX
+		directionY = @swipeDirectionY
+		@swipeDirectionX = null
+		@swipeDirectionY = null
 
-		mouseEndTime = new Date().getTime()
-		mouseTime = mouseEndTime-@mouseStartTime
-		return undefined if mouseTime < @debounceDuration
+		swipeEndTime = new Date().getTime()
+		swipeTime = swipeEndTime-@swipeStartTime
+		return undefined if swipeTime < @debounceDuration
 
-		# distX = Math.abs(@mouseStartCoords[0]-e.pageX)
-		# distY = Math.abs(@mouseStartCoords[1]-e.pageY)
-
-		@__handleMouseSwipe e.target, [directionX, directionY]
-
-	# Touchy Logic
-	touchBound: false
-	__bindTouchSwipe: ->
-		return false if @touchBound is true
-		@touchBound = true
-		console.log '__bindTouchSwipe'
-		$(window).on 'touchstart.'+@namespace, @__touchStart
-		$(window).on 'touchmove.'+@namespace, @__touchMove
-		$(window).on 'touchend.'+@namespace, @__touchEnd
-	__touchStart: (e)->
-		console.log 'touchstart', e
-	__touchMove: (e)->
-		console.log 'touchmove', e
-	__touchEnd: (e)->
-		console.log 'touchend', e
-	# __handleMouseSwipe: (target, directions, distances)->
-	# 	for direction in directions
-	# 		@__executeHandlers target, 'Swipe' if direction
-	# 		@__executeHandlers target, direction if direction
-	# __executeHandlers: (target, direction)->
-	# 	handlers = this['handlers'+direction]
-	# 	return undefined if _.isNull(handlers) or _.isEmpty(handlers)
-	# 	for options in handlers
-	# 		targetClass = options.$el.get(0).className
-	# 		targetSelector = @__getSelector targetClass
-	# 		targetIsEl = $(target).hasClass targetClass
-	# 		targetIsParent = $(target).parents(targetSelector).length > 0
-	# 		options.handler.call options.context if targetIsEl or targetIsParent
+		@__handleSwipe target, [directionX, directionY]
 
 	# Helpers
 	__isJQuery: (el)->
