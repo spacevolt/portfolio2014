@@ -14,13 +14,6 @@ module.exports = class PortfolioController extends Controller
 	template: require './templates/portfolio'
 
 	attached: ->
-		console.log 'PortfolioController Attached', @
-		@portfolio = @options.portfolio
-		@projects = @options.projects
-		@currentIndex = @options.currentIndex if typeof @options.currentIndex is 'number'
-
-		@$el.addClass 'i0'+@currentIndex
-
 		@__appendProjectSlides()
 		@resize()
 		@__updateCounter()
@@ -58,18 +51,19 @@ module.exports = class PortfolioController extends Controller
 		@__slideToIndex @currentIndex-1
 	firstSlide: ->
 		@$('.project-wrapper').addClass 'first-slide'
-		@sliding = true
+		@clickLocked = true
 	lastSlide: ->
 		@$('.project-wrapper').addClass 'last-slide'
-		@sliding = true
+		@clickLocked = true
 
 	__bindHandlers: ->
 		@__bindKeyboard()
 		@__bindCursor()
+		@__bindSwipe()
 		# unlock transition events
 		$(window).on ev.all.transitionend, @__transitionEnd
 		$(window).on ev.all.animationend, @__transitionEnd
-		# bind swipe handler : mouse and touch
+	__bindSwipe: ->
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @
 		swipe.swipeLeft @$el, swipeLeft
@@ -86,7 +80,7 @@ module.exports = class PortfolioController extends Controller
 	__keyPressed: (e)=>
 		validCodes = [37,39]
 		code = e.keyCode
-		return true if @keylocked  or @sliding or !(code in validCodes)
+		return true if @keylocked  or @clickLocked or !(code in validCodes)
 
 		@keylocked = true
 		@lockedkey = code
@@ -106,7 +100,7 @@ module.exports = class PortfolioController extends Controller
 	__mouseUp: =>
 		@$el.removeClass 'mousedown'
 
-	sliding: false
+	clickLocked: false
 	__primeSlides: ->
 		setTimeout =>
 			@$('.project-wrapper').addClass 'primed'
@@ -120,11 +114,11 @@ module.exports = class PortfolioController extends Controller
 		marginLeft = 0-(@slideW*index)
 		@$('.project-wrapper').css 'margin-left': marginLeft
 		@__updateCounter()
-		@sliding = true if @$('.project-wrapper').hasClass 'primed'
+		@clickLocked = true if @$('.project-wrapper').hasClass 'primed'
 	__transitionEnd: (e)=>
 		targetClass = e.target.className
 		if targetClass.indexOf 'project-wrapper' >= 0
-			@sliding = false
+			@clickLocked = false
 			@$('.project-wrapper').removeClass 'first-slide last-slide'
 
 	__appendProjectSlides: ->
