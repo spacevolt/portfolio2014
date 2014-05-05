@@ -1,6 +1,5 @@
 transition =
 	slide: (options)->
-		console.log 'transition', options
 		current = options.current
 		upcoming = options.upcoming
 
@@ -9,8 +8,8 @@ transition =
 			$(upcoming).addClass 'current'
 			setTimeout ->
 				Chaplin.mediator.publish 'PageTransitionEnd', {previous: current, current: upcoming}
-			, 2000
-		, 850
+			, 1050
+		, 200
 
 	none: (options)->
 		#

@@ -29,6 +29,8 @@ module.exports = class PortfoliosAssembler extends Assembler
 
 	__getCurrentSlideIndex: ->
 		slideIndex = 0
+		return slideIndex if _.isNull @options.project
+
 		slug = @options.project
 		for project, idx in portfolioData.portfolio.projects
 			slideIndex = idx if project.slug is slug

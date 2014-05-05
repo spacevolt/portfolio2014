@@ -7,7 +7,6 @@ module.exports = class SiteController extends Controller
 	regions:
 		header: 'nav.header'
 		main: '#Page-Container .page-wrapper'
-		# footer: 'footer'
 	template: require './templates/site'
 
 	resize: ->

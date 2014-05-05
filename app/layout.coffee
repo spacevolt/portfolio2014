@@ -6,13 +6,12 @@ module.exports = class Layout extends Chaplin.Layout
 	initialize: ->
 		super
 		@subscribeEvent 'beforeControllerDispose', @beforeDisposeHandler
-		@subscribeEvent 'dispatcher:dispatch', @dispatchHandler
+		@subscribeEvent ev.mediator.assembler.carouselready, @dispatchHandler
 		@subscribeEvent 'PageTransitionEnd', @removeAllDisposedViews
-		@subscribeEvent ev.mediator.assembler.carouselready, @setUpcomingEl
 
 	removeAllDisposedViews: (views)->
 		$('.garbage').each (index, el) ->
-			$(el).remove()
+			$(el).remove() if el is views.previous
 
 	beforeDisposeHandler: (assembler)->
 		if assembler.carousel
@@ -37,8 +36,3 @@ module.exports = class Layout extends Chaplin.Layout
 				fn options
 		else
 			$(upcomingEl).addClass 'current'
-
-	setUpcomingEl: (assembler)->
-		@oldViewEl = assembler.carousel.el
-		upcomingEl = assembler.carousel.el
-		$(upcomingEl).addClass 'current'

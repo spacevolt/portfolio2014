@@ -3,6 +3,7 @@ Project = require './project/project-controller'
 
 swipe = require 'util/swipe'
 ev = require 'util/events'
+device = require 'util/device'
 
 module.exports = class PortfolioController extends Controller
 	autoRender: true
@@ -55,6 +56,12 @@ module.exports = class PortfolioController extends Controller
 	lastSlide: ->
 		@$('.project-wrapper').addClass 'last-slide'
 		@clickLocked = true
+	__updateSlug: ->
+		return false if not @slides and not device.supports 'history'
+		slug = '#!/'+@slides[@currentIndex].model.get 'slug'
+		return false if slug is location.hash
+
+		history.replaceState null, null, slug
 
 	__bindHandlers: ->
 		@__bindKeyboard()
@@ -117,16 +124,17 @@ module.exports = class PortfolioController extends Controller
 		@clickLocked = true if @$('.project-wrapper').hasClass 'primed'
 	__transitionEnd: (e)=>
 		targetClass = e.target.className
-		if targetClass.indexOf 'project-wrapper' >= 0
-			@clickLocked = false
-			@$('.project-wrapper').removeClass 'first-slide last-slide'
+		return false if targetClass.indexOf('project-wrapper') > 0
+		@clickLocked = false
+		@$('.project-wrapper').removeClass 'first-slide last-slide'
+		@__updateSlug()
 
 	__appendProjectSlides: ->
 		@slides = []
 		for project, idx in @portfolio.projects
 			project.index = idx
 			slide = new Project
-				container: '.project-wrapper'
+				container: @$('.project-wrapper')
 				modelOptions: project
 			@slides.push slide
 	__updateCounter: ->
