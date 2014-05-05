@@ -9,12 +9,15 @@
 	user-select: none
 	-webkit-user-drag: none
 	user-drag: none
+	cursor: -webkit-grab
+	cursor: -moz-grab
 	*
 		user-select: none
 		-webkit-user-drag: none
 		user-drag: none
 	&.mousedown
-		cursor: default
+		cursor: -webkit-grabbing
+		cursor: -moz-grabbing
 	.project-wrapper
 		position: absolute
 		top: 0
