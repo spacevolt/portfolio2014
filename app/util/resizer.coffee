@@ -22,6 +22,10 @@ resizer =
 			$el.css height: cH
 
 	centerVertically: (el, container)->
+		@centerEl el, container, 'vertical'
+	centerHorizontally: (el, container)->
+		@centerEl el, container, 'horizontal'
+	centerEl: (el, container, axis)->
 		$el = @__getjQueryWrapper el
 		$container = @__getjQueryWrapper container
 
@@ -29,18 +33,17 @@ resizer =
 		cH = $container.outerHeight()
 		top = (cH-eH)/2
 
-		$el.css {'margin-top': '', 'margin-left': ''}
-		$el.css 'margin-top': top
-	centerHorizontally: (el, container)->
-		$el = @__getjQueryWrapper el
-		$container = @__getjQueryWrapper container
-
 		eW = $el.outerWidth()
 		cW = $container.outerWidth()
 		left = (cW-eW)/2
 
 		$el.css {'margin-top': '', 'margin-left': ''}
-		$el.css 'margin-left', left
+		if axis is 'horizontal'
+			$el.css 'margin-left', left
+		else if axis is 'vertical'
+			$el.css 'margin-top', top
+		else
+			$el.css {'margin-top': top, 'margin-left': left}
 
 	coverImage: (el, container)->
 		$el = @__getjQueryWrapper el
@@ -50,7 +53,6 @@ resizer =
 		cRatio = $container.outerWidth()/$container.outerHeight()
 		eRatio = $el.outerWidth()/$el.outerHeight()
 
-		console.log 'coverImage ratio', eRatio
 		@__fillWidth($el, $container) if cRatio > eRatio
 		@__fillHeight($el, $container) if cRatio <= eRatio
 
@@ -67,7 +69,7 @@ resizer =
 		cH = $container.outerHeight()
 		eRatio = $el.outerWidth()/$el.outerHeight()
 		eW = eRatio*cH
-		console.log '__fillHeight ratio', eRatio
+		
 		$el.css {width: '', height: ''}
 		$el.css {width: eW, height: cH}
 

@@ -31,6 +31,7 @@ module.exports = class PortfolioController extends Controller
 		@$('.project-wrapper').css width: wrapperW
 
 		@__resizeSlides()
+		@__slideToIndex(@currentIndex)
 	__resizeSlides: ->
 		for slide, idx in @slides
 			slideLeft = @slideW*idx

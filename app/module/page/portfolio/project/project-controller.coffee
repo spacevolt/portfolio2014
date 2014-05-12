@@ -17,8 +17,6 @@ module.exports = class ProjectController extends Controller
 		@resizeBackgroundImage()
 		@positionSlideCopy()
 	resizeBackgroundImage: ->
-		$bgImg = @$('.project-bgimg')
-		$slideContainer = @$('.project-feature')
-		resizer.coverImage $bgImg, $slideContainer
+		resizer.coverImage @$('.project-bgimg'), @$('.project-feature')
 	positionSlideCopy: ->
-		# ...
+		resizer.centerEl @$('.project-info'), @$('.project-feature')

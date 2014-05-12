@@ -1,9 +1,15 @@
 <div class="project-feature wfull row">
 	<img class="project-bgimg" src="{{this.bgImg}}" />
-	{{!-- <div class="title-wrap c6">
-		<div class="client-wrap">
-			<div class="client-underline"></div>
-			<img class="project-client" src="{{this.logo}}" />
+	<div class="project-info">
+		<div class="project-titleblock">
+			{{#if this.title}}
+			<h2>{{this.title}}</h2>
+			{{/if}}
 		</div>
-	</div> --}}
+		<div class="project-contentblock">
+			{{#if this.description}}
+			<p>{{this.description}}</p>
+			{{/if}}
+		</div>
+	</div>
 </div>
