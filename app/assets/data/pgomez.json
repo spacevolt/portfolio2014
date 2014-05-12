@@ -1,39 +1,19 @@
 {
 	"projects": [{
 		"slug": "project01",
-		"keyart": "/images/project01/keyart01.jpg",
-		"logo": "/images/project01/logo01.jpg",
-		"copy01": "Client01",
-		"copy02": "Project01",
-		"copy03": ".MicroSite",
-		"color": "#7f642b",
+		"bgImg": "/images/project01/keyart01.jpg",
 		"jsonUrl": "/data/project01.json"
 	},{
 		"slug": "project02",
-		"keyart": "/images/project01/keyart01.jpg",
-		"logo": "/images/project01/logo01.jpg",
-		"copy01": "Client02",
-		"copy02": "Project02",
-		"copy03": ".Platform",
-		"color": "#001b56",
+		"bgImg": "/images/project01/keyart01.jpg",
 		"jsonUrl": "/data/project02.json"
 	},{
 		"slug": "project03",
-		"keyart": "/images/project01/keyart01.jpg",
-		"logo": "/images/project01/logo01.jpg",
-		"copy01": "Client03",
-		"copy02": "Project03",
-		"copy03": ".Website",
-		"color": "#001b56",
+		"bgImg": "/images/project01/keyart01.jpg",
 		"jsonUrl": "/data/project03.json"
 	},{
 		"slug": "project04",
-		"keyart": "/images/project01/keyart01.jpg",
-		"logo": "/images/project01/logo01.jpg",
-		"copy01": "Client04",
-		"copy02": "Project04",
-		"copy03": ".Website",
-		"color": "#001b56",
+		"bgImg": "/images/project01/keyart01.jpg",
 		"jsonUrl": "/data/project04.json"
 	}]
 }

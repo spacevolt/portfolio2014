@@ -12,7 +12,13 @@ module.exports = class ProjectController extends Controller
 		@$el.addClass @slideClass
 		# console.log @model.attributes
 
+	debounceDuration: 50
 	resize: ->
-		$keyArt = @$('.project-keyart')
-		$keyArtWrap = @$('.keyart-wrap')
-		resizer.fitToContainer $keyArt, $keyArtWrap
+		@resizeBackgroundImage()
+		@positionSlideCopy()
+	resizeBackgroundImage: ->
+		$bgImg = @$('.project-bgimg')
+		$slideContainer = @$('.project-feature')
+		resizer.coverImage $bgImg, $slideContainer
+	positionSlideCopy: ->
+		# ...
