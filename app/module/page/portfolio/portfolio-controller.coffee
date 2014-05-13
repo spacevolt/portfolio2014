@@ -11,33 +11,19 @@ module.exports = class PortfolioController extends Controller
 	projects: null
 	slides: null
 	currentIndex: 0
+	slideClass:
+		prev: 'prev'
+		curr: 'curr'
+		next: 'next'
 	className: 'portfolio-carousel'
 	template: require './templates/portfolio'
 
 	attached: ->
 		@__appendProjectSlides()
-		@resize()
 		@__updateCounter()
 		@__slideToIndex @currentIndex
 		@__primeSlides()
 		@__bindHandlers()
-
-	slideW: null
-	resize: ->
-		return undefined if !@portfolio or !@slides
-		@slideW = @$el.outerWidth()
-		
-		wrapperW = @slideW * (@portfolio.projects.length)
-		@$('.project-wrapper').css width: wrapperW
-
-		@__resizeSlides()
-		@__slideToIndex(@currentIndex)
-	__resizeSlides: ->
-		for slide, idx in @slides
-			slideLeft = @slideW*idx
-			slide.$el.css
-				left: slideLeft
-				width: @slideW
 
 	nextProject: ->
 		if @currentIndex is @slides.length-1
@@ -52,10 +38,10 @@ module.exports = class PortfolioController extends Controller
 
 		@__slideToIndex @currentIndex-1
 	firstSlide: ->
-		@$('.project-wrapper').addClass 'first-slide'
+		@slides[@currentIndex].$el.addClass 'first-slide'
 		@clickLocked = true
 	lastSlide: ->
-		@$('.project-wrapper').addClass 'last-slide'
+		@slides[@currentIndex].$el.addClass 'last-slide'
 		@clickLocked = true
 	__updateSlug: ->
 		return false if not @slides and not device.supports 'history'
@@ -116,18 +102,55 @@ module.exports = class PortfolioController extends Controller
 	__slideToIndex: (index)->
 		invalidIndex = typeof index isnt 'number'
 		outOfRange = 0 > index and index > @slides.length
-		return false if invalidIndex or outOfRange
+		isCurrentSlide = index is @currentIndex
+		return false if invalidIndex or outOfRange or isCurrentSlide
 
-		@currentIndex = index
-		marginLeft = 0-(@slideW*index)
-		@$('.project-wrapper').css 'margin-left': marginLeft
+		slideFn = @__slideToPrev
+		slideFn = @__slideToNext if index > @currentIndex
+		recurseCount = Math.abs(@currentIndex-index)
+
+		slideFn(recurseCount)
+
 		@__updateCounter()
 		@clickLocked = true if @$('.project-wrapper').hasClass 'primed'
+	__slideToPrev: (recurseCount)=>
+		currIdx = @currentIndex
+		allPositions = @slideClass.prev+' '+@slideClass.curr+' '+@slideClass.next
+
+		@slides[currIdx].$el.removeClass allPositions
+		@slides[currIdx].$el.addClass @slideClass.next
+
+		@slides[currIdx-1].$el.removeClass allPositions
+		@slides[currIdx-1].$el.addClass @slideClass.curr
+
+		@currentIndex--
+
+		recurseCount-- if recurseCount
+		if recurseCount
+			$(window).one ev.all.transitionend, =>
+				@__slideToPrev(recurseCount)
+	__slideToNext: (recurseCount)=>
+		currIdx = @currentIndex
+		allPositions = @slideClass.prev+' '+@slideClass.curr+' '+@slideClass.next
+
+		@slides[currIdx].$el.removeClass allPositions
+		@slides[currIdx].$el.addClass @slideClass.prev
+
+		@slides[currIdx+1].$el.removeClass allPositions
+		@slides[currIdx+1].$el.addClass @slideClass.curr
+
+		@currentIndex++
+
+		recurseCount-- if recurseCount
+		if recurseCount
+			$(window).one ev.all.transitionend, =>
+				@__slideToNext(recurseCount)
+
 	__transitionEnd: (e)=>
 		targetClass = e.target.className
-		return false if targetClass.indexOf('project-wrapper') > 0
+		return false if targetClass.indexOf('project-slide') > 0
 		@clickLocked = false
-		@$('.project-wrapper').removeClass 'first-slide last-slide'
+		@slides[@currentIndex].$el.removeClass 'first-slide last-slide'
 		@__updateSlug()
 
 	__appendProjectSlides: ->
@@ -138,6 +161,15 @@ module.exports = class PortfolioController extends Controller
 				container: @$('.project-wrapper')
 				modelOptions: project
 			@slides.push slide
+		@__prepareSlideClasses()
+	__prepareSlideClasses: ->
+		index = @currentIndex
+		positionClass = @slideClass.prev
+		
+		for slide, idx in @slides
+			positionClass = @slideClass.curr if index is idx
+			positionClass = @slideClass.next if index < idx
+			slide.$el.addClass positionClass
 	__updateCounter: ->
 		return if !@slides
 		totalSlides = @__padDigits @slides.length

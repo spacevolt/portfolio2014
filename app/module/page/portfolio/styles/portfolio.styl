@@ -3,7 +3,7 @@
 
 .portfolio-carousel
 	position: absolute
-	top: $nav-height
+	top: 0
 	left: 100%
 	width: 100%
 	height: 100%
@@ -27,29 +27,6 @@
 		cursor: -webkit-grabbing
 		cursor: -moz-grabbing
 	.project-wrapper
-		position: absolute
-		top: 0
-		left: 0
+		position: relative
+		width: 100%
 		height: 100%
-		&.primed
-			transition: margin-left 1s ease-in-out
-		&.last-slide
-			animation: lastSlide 0.8s ease-in-out
-		&.first-slide
-			animation: firstSlide 0.8s ease-in-out
-
-@keyframes firstSlide
-	0% { transform: translateX(30px) }
-	70% { transform: translateX(-26px) }
-	85% { transform: translateX(15px) }
-	90% { transform: translateX(-14px) }
-	95% { transform: translateX(8px) }
-	100% { transform: translateX(0px) }
-
-@keyframes lastSlide
-	0% { transform: translateX(-30px) }
-	70% { transform: translateX(26px) }
-	85% { transform: translateX(-15px) }
-	90% { transform: translateX(14px) }
-	95% { transform: translateX(-8px) }
-	100% { transform: translateX(0px) }
