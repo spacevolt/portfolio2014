@@ -14,9 +14,18 @@ module.exports = class ProjectController extends Controller
 
 	debounceDuration: 50
 	resize: ->
+		@__staticTransitions()
 		@resizeBackgroundImage()
 		@positionSlideCopy()
+		@__animateTransitions()
 	resizeBackgroundImage: ->
 		resizer.coverImage @$('.project-bgimg'), @$('.project-feature')
 	positionSlideCopy: ->
 		resizer.centerEl @$('.project-info'), @$('.project-feature')
+
+	__animateTransitions: ->
+		setTimeout =>
+			@$('.project-info').addClass 'primed'
+		, 200
+	__staticTransitions: ->
+		@$('.project-info').removeClass 'primed'

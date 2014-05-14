@@ -122,6 +122,7 @@ module.exports = class PortfolioController extends Controller
 
 		@slides[currIdx-1].$el.removeClass allPositions
 		@slides[currIdx-1].$el.addClass @slideClass.curr
+		@slides[currIdx-1].resize()
 
 		@currentIndex--
 
@@ -138,6 +139,7 @@ module.exports = class PortfolioController extends Controller
 
 		@slides[currIdx+1].$el.removeClass allPositions
 		@slides[currIdx+1].$el.addClass @slideClass.curr
+		@slides[currIdx+1].resize()
 
 		@currentIndex++
 

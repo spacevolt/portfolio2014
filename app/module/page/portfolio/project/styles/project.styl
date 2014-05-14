@@ -39,21 +39,44 @@
 	padding: 15px
 	max-width: 65%
 	border-radius: 5px
-	background-color: rgba(25,25,25,0.3)
+	color: #fff
 	z-index: 5
+	opacity: 0
+	&.primed
+		transition: opacity 0.5s ease-in-out, margin 0.8s ease-in-out
+		opacity: 1
 	.project-titleblock
 		text-align: center
-		border-bottom: 1px solid #000
 	h2
 		margin: 0
 		font-size: 45px
 		line-height: @font-size+10
 		text-transform: uppercase
-		text-shadow: 0 0 5px rgba(245,245,245,0.8)
 	.project-contentblock
 		text-align: center
 	p
 		font-size: 24px
+	.project-titleblock h2,
+	.project-contentblock p
+		text-shadow: 0 0 3px rgba(25, 25, 25, 0.4)
+
+.project-slide.prev .project-info
+	margin-left: 80% !important
+	opacity: 0
+.project-slide.curr .project-info
+	opacity: 1
+.project-slide.next .project-info
+	margin-left: -20% !important
+	opacity: 0
+
+.project-cta
+	text-align: center
+	button
+		font-size: 36px
+		color: #fff
+		border: 1px solid @color
+		border-radius: 5px
+		background-color: rgba(25, 25, 25, 0.4)
 
 @keyframes firstSlide
 	0% { transform: translateX(30px) }
