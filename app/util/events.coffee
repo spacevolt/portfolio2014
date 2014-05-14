@@ -33,6 +33,10 @@ inputEvents =
 		transitionend     : transitionEvent()
 		animationend      : animationEvent()
 		orientationchange : 'orientationchange'
+	mouse:
+		down 	: 'mousedown'
+		move 	: 'mousemove'
+		up		: 'mouseup'
 	# Media events
 	media:
 		videoend : 'ended'

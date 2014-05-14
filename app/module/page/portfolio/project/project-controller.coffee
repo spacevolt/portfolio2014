@@ -1,6 +1,7 @@
 Controller = require 'base/controller'
 
 resizer = require 'util/resizer'
+ev = require 'util/events'
 
 module.exports = class ProjectController extends Controller
 	autoRender: true
@@ -10,7 +11,17 @@ module.exports = class ProjectController extends Controller
 	attached: ->
 		@slideClass = 'slide'+@model.get 'index'
 		@$el.addClass @slideClass
-		# console.log @model.attributes
+		@__bindProjectButton()
+
+	__bindProjectButton: ->
+		@$('button').on ev.all.click, @__loadProjectTemplates
+		@$('button').on ev.mouse.down+' '+ev.mouse.up+' '+ev.mouse.move, @__stopPropagation
+
+	__stopPropagation: (e)->
+		e.preventDefault()
+		e.stopPropagation()
+	__loadProjectTemplates: ->
+		console.log 'LOAD PROJECT'
 
 	debounceDuration: 50
 	resize: ->
