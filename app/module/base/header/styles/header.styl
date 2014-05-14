@@ -4,15 +4,23 @@
 .hud
 	position: absolute
 	height: $nav-height
-	background-color: rgba(#c1b289, 0.8)
 	width: 100%
+	font-size: 14px
+	font-weight: 700
+	color: #ffffff
+	background-color: rgba(#c1b289, 0.8)
 	clearfix()
 	z-index: 5
+	.links
+		float: left
+		padding-left: 10px
+	p
+		margin: 0
+		line-height: $nav-height
+	.about-link
+		cursor: pointer
 	.slide-counter
 		float: right
 		padding: 0 10px
 		height: 100%
-		font-size: 14px
-		font-weight: 700
 		line-height: $nav-height
-		color: #ffffff

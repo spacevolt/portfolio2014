@@ -25,6 +25,9 @@ module.exports = class PortfolioController extends Controller
 		@__primeSlides()
 		@__bindHandlers()
 
+	flipOver: ->
+		console.log 'Flip Carousel Over'
+
 	nextProject: ->
 		if @currentIndex is @slides.length-1
 			@lastSlide()
@@ -57,6 +60,8 @@ module.exports = class PortfolioController extends Controller
 		# unlock transition events
 		$(window).on ev.all.transitionend, @__transitionEnd
 		$(window).on ev.all.animationend, @__transitionEnd
+		# 3d-flip carousel
+		@subscribeEvent ev.mediator.header.aboutlink, @flipOver
 	__bindSwipe: ->
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @

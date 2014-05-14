@@ -57,4 +57,7 @@ inputEvents =
 		view:
 			appended: 'view:append' # Fires when a view has been appended to the DOM
 
+		header:
+			aboutlink: 'header:aboutlink' # Fires when the about link is clicked
+
 module.exports = inputEvents
