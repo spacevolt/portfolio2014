@@ -25,8 +25,18 @@ module.exports = class PortfolioController extends Controller
 		@__primeSlides()
 		@__bindHandlers()
 
-	flipOver: ->
-		console.log 'Flip Carousel Over'
+	onAboutPage: false
+	flipToAbout: ->
+		@$el.addClass('flip')
+		@onAboutPage = true
+		@clickLocked = true
+		setTimeout =>
+			@$('.about-wrapper').css 'display', 'block'
+		, 425
+	flipToCarousel: ->
+		@$el.removeClass('flip')
+		@onAboutPage = false
+		@clickLocked = true
 
 	nextProject: ->
 		if @currentIndex is @slides.length-1
@@ -61,7 +71,7 @@ module.exports = class PortfolioController extends Controller
 		$(window).on ev.all.transitionend, @__transitionEnd
 		$(window).on ev.all.animationend, @__transitionEnd
 		# 3d-flip carousel
-		@subscribeEvent ev.mediator.header.aboutlink, @flipOver
+		@subscribeEvent ev.mediator.header.aboutlink, @flipToAbout
 	__bindSwipe: ->
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @
@@ -155,10 +165,20 @@ module.exports = class PortfolioController extends Controller
 
 	__transitionEnd: (e)=>
 		targetClass = e.target.className
-		return false if targetClass.indexOf('project-slide') > 0
+		targetIsSlide = targetClass.indexOf('project-slide') >= 0
+		targetIsCarousel = targetClass.indexOf('portf') >= 0
+
+		@__slideTransitionEnd() if targetIsSlide
+		@__carouselTransitionEnd() if targetIsCarousel
+		# return false if targetClass.indexOf('project-slide') >= 0
+	__slideTransitionEnd: ->
 		@clickLocked = false
 		@slides[@currentIndex].$el.removeClass 'first-slide last-slide'
 		@__updateSlug()
+	__carouselTransitionEnd: ->
+		@clickLocked = false
+		if not @onAboutPage
+			@$('.about-wrapper').css 'display', ''
 
 	__appendProjectSlides: ->
 		@slides = []
