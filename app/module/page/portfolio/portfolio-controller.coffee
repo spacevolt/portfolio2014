@@ -26,6 +26,11 @@ module.exports = class PortfolioController extends Controller
 		@__bindHandlers()
 
 	onAboutPage: false
+	aboutLinkClicked: ->
+		if @onAboutPage
+			@flipToCarousel()
+		else
+			@flipToAbout()
 	flipToAbout: ->
 		@$el.addClass('flip')
 		@onAboutPage = true
@@ -71,7 +76,7 @@ module.exports = class PortfolioController extends Controller
 		$(window).on ev.all.transitionend, @__transitionEnd
 		$(window).on ev.all.animationend, @__transitionEnd
 		# 3d-flip carousel
-		@subscribeEvent ev.mediator.header.aboutlink, @flipToAbout
+		@subscribeEvent ev.mediator.header.aboutlink, @aboutLinkClicked
 	__bindSwipe: ->
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @
