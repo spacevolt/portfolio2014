@@ -1,10 +1,3 @@
-#***[ARRAY REMOVE ELEMENT]
-#*************************
-Array.prototype.remove = (from, to)->
-	rest = @slice((to or from) + 1 or @length)
-	@length = if from < 0 then @length + from else from
-	@push.apply @, rest
-
 module.exports = class DataLoader
 	loader: null
 	loadCount: 0
@@ -57,7 +50,7 @@ module.exports = class DataLoader
 			@__loadNext()
 
 	__requestCompleted: ->
-		@loader.remove 0
+		@loader.shift()
 		@loadInProgress = false
 		@loadCount = 0
 		@__loadAllDataInOrder()

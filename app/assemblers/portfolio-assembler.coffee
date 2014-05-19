@@ -24,7 +24,7 @@ module.exports = class PortfoliosAssembler extends Assembler
 		@__instantiatePortfolio()
 		@__instantiateComponents()
 	__instantiateComponents: ->
-		@reuse 'header', Header, region: 'header'
+		@reuse 'header', Header, {region: 'header', model: portfolioData.portfolio}
 		@reuse 'marquee', Marquee, {container: '.page-wrapper', model: portfolioData.portfolio}
 	__instantiatePortfolio: ->
 		@carousel = new Portfolio
