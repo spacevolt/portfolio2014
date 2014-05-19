@@ -28,7 +28,13 @@
 		"buttonCopy": "view project",
 		"jsonUrl": "/data/project04.json"
 	}],
+
+
 	"links": {
-		"aboutLinkCopy":"Learn More About This Bad Bitch"
+		"aboutLinkCopy": "Learn More About This Bad Bitch"
+	},
+
+	"about" : {
+		"title": ""
 	}
 }

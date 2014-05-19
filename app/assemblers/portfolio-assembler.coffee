@@ -1,6 +1,7 @@
 Assembler = require 'base/assembler'
 
 Header = require 'module/base/header/header-controller'
+Marquee = require 'module/component/marquee/marquee-controller'
 Portfolio = require 'module/page/portfolio/portfolio-controller'
 
 portfolioData = require 'util/data'
@@ -20,10 +21,11 @@ module.exports = class PortfoliosAssembler extends Assembler
 		else
 			@subscribeEvent ev.mediator.data.ready, @__loadPage
 	__loadPage: ->
-		@__instantiateHeader()
 		@__instantiatePortfolio()
-	__instantiateHeader: ->
-		@reuse 'header', Header, {region: 'header', model: portfolioData.portfolio}
+		@__instantiateComponents()
+	__instantiateComponents: ->
+		@reuse 'header', Header, region: 'header'
+		@reuse 'marquee', Marquee, {container: '.page-wrapper', model: portfolioData.portfolio}
 	__instantiatePortfolio: ->
 		@carousel = new Portfolio
 			region: 'main'
