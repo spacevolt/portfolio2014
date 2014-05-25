@@ -20,7 +20,6 @@ module.exports = class PortfolioController extends Controller
 
 	attached: ->
 		@__appendProjectSlides()
-		@__updateCounter()
 		@__slideToIndex @currentIndex
 		@__primeSlides()
 		@__bindHandlers()
@@ -131,7 +130,6 @@ module.exports = class PortfolioController extends Controller
 
 		slideFn(recurseCount)
 
-		@__updateCounter()
 		@clickLocked = true if @$('.project-wrapper').hasClass 'primed'
 	__slideToPrev: (recurseCount)=>
 		currIdx = @currentIndex
@@ -202,12 +200,6 @@ module.exports = class PortfolioController extends Controller
 			positionClass = @slideClass.curr if index is idx
 			positionClass = @slideClass.next if index < idx
 			slide.$el.addClass positionClass
-	__updateCounter: ->
-		return if !@slides
-		totalSlides = @__padDigits @slides.length
-		currentSlide = @__padDigits @currentIndex+1
-		$('.counter-current').html currentSlide
-		$('.counter-total').html totalSlides
 
 	__padDigits: (num)->
 		padding = if num < 10 then '0' else ''
