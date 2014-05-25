@@ -3,11 +3,21 @@
 .marquee-container
 	position: absolute
 	top: 0
-	left: 85%
-	width: 50%
+	left: 99%
+	width: 25%
 	height: 100%
 	background-color: #fff
+	transition: left 0.4s ease-in-out
+	&:hover
+		left: 75%
+.marquee-viewport
+	position: relative
+	padding-right: 2%
+	width: 102%
+	height: 100%
+	background-color: aqua
+	overflow-y: auto
 .marquee-wrapper
 	width: 100%
 	min-height: 100%
-	background-color: orange
+	background-color: magenta
