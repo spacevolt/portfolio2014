@@ -177,6 +177,6 @@ class Swipe
 	unbindAll: ->
 		$(window).off @namespace
 
-window.PGomez = window.PGomez || {}
-window.PGomez.swipe = window.PGomez.swipe || new Swipe
-module.exports = window.PGomez.swipe
+window.carousel = window.carousel || {}
+window.carousel.swipe = window.carousel.swipe || new Swipe
+module.exports = window.carousel.swipe

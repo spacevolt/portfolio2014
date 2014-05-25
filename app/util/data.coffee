@@ -4,8 +4,8 @@ loader = new Loader
 
 SingletonWrapper = class DataManagerSingleton
 	getInstance: ->
-		window.pgomez = window.pgomez || {}
-		window.pgomez.data = window.pgomez.data || new DataManager
+		window.carousel = window.carousel || {}
+		window.carousel.data = window.carousel.data || new DataManager
 
 DataManager = class DataUtil
 	_.extend @prototype, Chaplin.EventBroker
@@ -27,7 +27,7 @@ DataManager = class DataUtil
 		@__retrievePortfolio()
 
 	__retrievePortfolio: ->
-		url = @portfolioURL || "data/pgomez.json"
+		url = @portfolioURL || "data/carousel.json"
 		options =
 			context: @
 			receiver: @__retrievedPortfolio
