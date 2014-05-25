@@ -1,5 +1,16 @@
 @import 'nib'
 
+.marquee-hitarea
+	position: fixed
+	top: 0
+	right: 0
+	width: 3%
+	height: 100%
+	// background-color: rgba(25,25,155,0.8)
+	z-index: 5
+.marquee-container.active .marquee-hitarea
+	width: 25%
+
 .marquee-container
 	position: absolute
 	top: 0
@@ -8,16 +19,17 @@
 	height: 100%
 	background-color: #fff
 	transition: left 0.4s ease-in-out
-	&:hover
+	z-index: 2
+	$hardwareAccel()
+	&.active
 		left: 75%
 .marquee-viewport
 	position: relative
 	padding-right: 2%
 	width: 102%
 	height: 100%
-	background-color: aqua
 	overflow-y: auto
 .marquee-wrapper
 	width: 100%
 	min-height: 100%
-	background-color: magenta
+	background-color: aqua

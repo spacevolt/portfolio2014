@@ -72,8 +72,8 @@ module.exports = class PortfolioController extends Controller
 		@__bindCursor()
 		@__bindSwipe()
 		# unlock transition events
-		$(window).on ev.all.transitionend, @__transitionEnd
-		$(window).on ev.all.animationend, @__transitionEnd
+		@subscribeEvent ev.mediator.transitionend, @__transitionEnded
+		@subscribeEvent ev.mediator.animationend, @__transitionEnded
 		# 3d-flip carousel
 		@subscribeEvent ev.mediator.header.aboutlink, @aboutLinkClicked
 	__bindSwipe: ->
@@ -166,10 +166,10 @@ module.exports = class PortfolioController extends Controller
 			$(window).one ev.all.transitionend, =>
 				@__slideToNext(recurseCount)
 
-	__transitionEnd: (e)=>
+	__transitionEnded: (e)=>
 		targetClass = e.target.className
 		targetIsSlide = targetClass.indexOf('project-slide') >= 0
-		targetIsCarousel = targetClass.indexOf('portf') >= 0
+		targetIsCarousel = targetClass.indexOf('portfolio-carousel') >= 0
 
 		@__slideTransitionEnd() if targetIsSlide
 		@__carouselTransitionEnd() if targetIsCarousel

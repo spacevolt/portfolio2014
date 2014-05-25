@@ -10,6 +10,8 @@ module.exports = class Application extends Chaplin.Application
 		$(window).on ev.all.orientationchange, @orientation
 		$(window).blur @onBlur
 		$(window).focus @onFocus
+		$(window).on ev.all.transitionend, @onTransitionend
+		$(window).on ev.all.animationend, @onAnimationend
 		super
 	# Replace the default Chaplin Layout object with our own custom Layout object
 	initLayout: (options = {}) ->
@@ -29,3 +31,7 @@ module.exports = class Application extends Chaplin.Application
 		@publishEvent ev.mediator.blur
 	onFocus: =>
 		@publishEvent ev.mediator.focus
+	onTransitionend: (e)=>
+		@publishEvent ev.mediator.transitionend, e
+	onAnimationend: (e)=>
+		@publishEvent ev.mediator.animationend, e

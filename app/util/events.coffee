@@ -37,6 +37,8 @@ inputEvents =
 		down 	: 'mousedown'
 		move 	: 'mousemove'
 		up		: 'mouseup'
+		over	: 'mouseover'
+		out		: 'mouseout'
 	# Media events
 	media:
 		videoend : 'ended'
@@ -47,6 +49,8 @@ inputEvents =
 		orientation : 'window:orientation' # Fires when orientation change occurs
 		blur : 'window:blur' # Fires when window loses focus
 		focus : 'window:focus' # Fires when window gains focus
+		transitionend: 'window:transitionend' # Fires when window fires transitionend event
+		animationend: 'window:animationend' # Firew shen window fires animationend event
 
 		assembler:
 			carouselready: 'carousel:ready' # Fires when the assembler has instantiated the carousel
