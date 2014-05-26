@@ -18,26 +18,43 @@ module.exports = class MarqueeController extends Controller
 	isOpen: false
 	clickLocked: false
 	toggleMenu: =>
+		console.log 'toggleMenu', @isOpen, @clickLocked
 		return undefined if @clickLocked
 		if not @isOpen
 			@openMenu()
 		else
 			@closeMenu()
 	openMenu: =>
+		console.log 'openMenu', @isOpen, @clickLocked
+		if @scheduleMenuClose is true
+			clearTimeout @menuCloseTimeout
+			@scheduleMenuClose = false
 		return undefined if @isOpen or @clickLocked
 		@$el.addClass 'active'
 		@clickLocked = true
 		@isOpen = true
+		return undefined
 	closeMenu: =>
+		console.log 'closeMenu', @isOpen, @clickLocked
 		return undefined if !@isOpen or @clickLocked
 		@$el.removeClass 'active'
 		@clickLocked = true
 		@isOpen = false
+		return undefined
 
 	__bindInputs: ->
 		@$el.on ev.all.click, @toggleMenu
 		@$el.on ev.mouse.over, @openMenu
-		@$el.on ev.mouse.out, @closeMenu
+		@$el.on ev.mouse.out, @__onMouseOut
+
+	scheduleMenuClose: false
+	menuCloseTimeout: null
+	__onMouseOut: (e)=>
+		console.log '__onMouseOut', @isOpen, @clickLocked
+		@scheduleMenuClose = true
+		@menuCloseTimeout = setTimeout =>
+			@closeMenu()
+		, 50
 
 	__bindEvents: ->
 		@subscribeEvent ev.mediator.transitionend, @__transitionEnded

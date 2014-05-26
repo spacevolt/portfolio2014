@@ -5,28 +5,32 @@
 		"title": "Look At My Awesome Design",
 		"description": "You want this sweetness working for you? Of course you do.",
 		"buttonCopy": "view project",
-		"jsonUrl": "/data/project01.json"
+		"jsonUrl": "/data/project01.json",
+		"menuColor": "red"
 	},{
 		"slug": "project02",
 		"bgImg": "/images/project02/keyart02.jpg",
 		"title": "High profile client",
 		"description": "I know what you're thinking. \"This designer must be fucking amazing.\" You goddamn right.",
 		"buttonCopy": "view project",
-		"jsonUrl": "/data/project02.json"
+		"jsonUrl": "/data/project02.json",
+		"menuColor": "orange"
 	},{
 		"slug": "project03",
 		"bgImg": "/images/project03/keyart03.jpg",
 		"title": "I'm not a design-slave",
 		"description": "I'm about to go all design-Django on Ad Agencies.",
 		"buttonCopy": "view project",
-		"jsonUrl": "/data/project03.json"
+		"jsonUrl": "/data/project03.json",
+		"menuColor": "yellow"
 	},{
 		"slug": "project04",
 		"bgImg": "/images/project04/keyart04.jpg",
 		"title": "I will work overtime",
 		"description": "But pay me, motherfucker.",
 		"buttonCopy": "view project",
-		"jsonUrl": "/data/project04.json"
+		"jsonUrl": "/data/project04.json",
+		"menuColor": "green"
 	}],
 
 

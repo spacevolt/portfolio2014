@@ -1,15 +1,16 @@
 @import 'nib'
 
 .marquee-hitarea
-	position: fixed
+	position: absolute
 	top: 0
-	right: 0
-	width: 3%
+	left: -3%
+	width: 6%
 	height: 100%
 	// background-color: rgba(25,25,155,0.8)
 	z-index: 5
 .marquee-container.active .marquee-hitarea
-	width: 25%
+	left: 0%
+	width: 0%
 
 .marquee-container
 	position: absolute
@@ -32,4 +33,4 @@
 .marquee-wrapper
 	width: 100%
 	min-height: 100%
-	background-color: aqua
+	background-color: #000

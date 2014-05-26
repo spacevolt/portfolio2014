@@ -1,1 +1,5 @@
-TEST
+{{#if this.slug}}
+<a class="menu-link" href="#!/{{this.slug}}">
+	<div class="item-card" style="background-color: {{this.menuColor}};">{{this.title}}</div>
+</a>
+{{/if}}
