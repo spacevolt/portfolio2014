@@ -208,5 +208,4 @@ module.exports = class PortfolioController extends Controller
 	dispose: ->
 		$(document).off ev.all.keydown
 		$(document).off ev.all.keyup
-		$(window).off ev.all.transitionend
 		super

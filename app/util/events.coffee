@@ -1,23 +1,4 @@
 #Input strings
-transitionEvent = ->
-	el = document.createElement('fakeelement')
-	transitions =
-		transition: 'transitionend'
-		MSTransition: 'msTransitionEnd'
-		MozTransition: 'transitionend'
-		WebkitTransition: 'webkitTransitionEnd'
-	for prop of transitions
-		return transitions[prop] if el.style[prop] isnt undefined
-animationEvent = ->
-	el = document.createElement('fakeelement')
-	animations =
-		animation: 'animationend'
-		MSAnimation: 'msAnimationEnd'
-		OAnimation: 'oanimationend'
-		WebkitAnimation: 'webkitAnimationEnd'
-	for prop of animations
-		return animations[prop] if el.style[prop] isnt undefined
-
 inputEvents =
 	# Mouse-and-Touch Events
 	all:
@@ -30,8 +11,8 @@ inputEvents =
 		up      : 'mouseup'
 		keydown : 'keydown'
 		keyup   : 'keyup'
-		transitionend     : transitionEvent()
-		animationend      : animationEvent()
+		transitionend     : 'transitionend msTransitionEnd webkitTransitionEnd'
+		animationend      : 'animationend msAnimationEnd oanimationend webkitAnimationEnd'
 		orientationchange : 'orientationchange'
 	mouse:
 		down 	: 'mousedown'
@@ -39,6 +20,7 @@ inputEvents =
 		up		: 'mouseup'
 		over	: 'mouseover'
 		out		: 'mouseout'
+		leave 	: 'mouseleave'
 	# Media events
 	media:
 		videoend : 'ended'

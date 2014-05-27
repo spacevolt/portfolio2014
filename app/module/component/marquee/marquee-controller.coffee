@@ -17,15 +17,16 @@ module.exports = class MarqueeController extends Controller
 
 	isOpen: false
 	clickLocked: false
+
 	toggleMenu: =>
-		console.log 'toggleMenu', @isOpen, @clickLocked
+		# console.log 'toggleMenu', @isOpen, @clickLocked
 		return undefined if @clickLocked
 		if not @isOpen
 			@openMenu()
 		else
 			@closeMenu()
 	openMenu: =>
-		console.log 'openMenu', @isOpen, @clickLocked
+		# console.log 'openMenu', @isOpen, @clickLocked
 		if @scheduleMenuClose is true
 			clearTimeout @menuCloseTimeout
 			@scheduleMenuClose = false
@@ -35,7 +36,7 @@ module.exports = class MarqueeController extends Controller
 		@isOpen = true
 		return undefined
 	closeMenu: =>
-		console.log 'closeMenu', @isOpen, @clickLocked
+		# console.log 'closeMenu', @isOpen, @clickLocked
 		return undefined if !@isOpen or @clickLocked
 		@$el.removeClass 'active'
 		@clickLocked = true
@@ -45,12 +46,12 @@ module.exports = class MarqueeController extends Controller
 	__bindInputs: ->
 		@$el.on ev.all.click, @toggleMenu
 		@$el.on ev.mouse.over, @openMenu
-		@$el.on ev.mouse.out, @__onMouseOut
+		@$el.on ev.mouse.leave, @__onMouseLeave
 
 	scheduleMenuClose: false
 	menuCloseTimeout: null
-	__onMouseOut: (e)=>
-		console.log '__onMouseOut', @isOpen, @clickLocked
+	__onMouseLeave: (e)=>
+		# console.log '__onMouseLeave', @isOpen, @clickLocked
 		@scheduleMenuClose = true
 		@menuCloseTimeout = setTimeout =>
 			@closeMenu()
@@ -61,6 +62,7 @@ module.exports = class MarqueeController extends Controller
 
 	__transitionEnded: (e)->
 		return false if not (e.target is @$el.get(0))
+		# console.log '__transitionEnded', e.target
 		@clickLocked = false
 
 	__instantiateItems: ->
@@ -76,3 +78,9 @@ module.exports = class MarqueeController extends Controller
 			@menuItems.push(new ItemController options)
 
 		console.log 'MarqueeController: ', @menuItems
+
+	dispose: ->
+		# Workaround for a bug in Chaplin composer:
+		# this controller is being disposed despite
+		# being reused on every page. Deny disposal.
+		return undefined
