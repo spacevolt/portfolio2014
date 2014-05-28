@@ -8,23 +8,19 @@ portfolioData = require 'util/data'
 ev = require 'util/events'
 
 module.exports = class PortfoliosAssembler extends Assembler
-	# beforeAction: ->
-	# 	super
-	# 	@reuse 'header', Header, region: 'header'
 
 	index: (options)->
 		@options = options
 		# if options.portfolio is about, call up the about page
 		# if options.portfolio is blank, pass in blank index
 		if portfolioData.ready
-			@__instantiatePortfolio()
+			@__loadPage()
 		else
 			@subscribeEvent ev.mediator.data.ready, @__loadPage
 	__loadPage: ->
 		@__instantiatePortfolio()
 		@__instantiateComponents()
 	__instantiateComponents: ->
-		@reuse 'header', Header, {region: 'header', model: portfolioData.portfolio}
 		@reuse 'marquee', Marquee, {container: '.page-wrapper', model: portfolioData.portfolio}
 	__instantiatePortfolio: ->
 		@carousel = new Portfolio

@@ -1,5 +1,7 @@
 Controller = require 'base/controller'
+Header = require 'module/base/header/header-controller'
 
+portfolioData = require 'util/data'
 resizer = require 'util/resizer'
 ev = require 'util/events'
 
@@ -11,8 +13,14 @@ module.exports = class ProjectController extends Controller
 	attached: ->
 		@slideClass = 'slide'+@model.get 'index'
 		@$el.addClass @slideClass
+		@__instantiateHeader()
 		@__bindProjectButton()
 
+	__instantiateHeader: ->
+		new Header
+			container: @$('.header')
+			model: portfolioData.portfolio
+		# @reuse 'header', Header, {region: 'header', model: portfolioData.portfolio}
 	__bindProjectButton: ->
 		@$('button').on ev.all.click, @__loadProjectTemplates
 		@$('button').on ev.mouse.down+' '+ev.mouse.up+' '+ev.mouse.move, @__stopPropagation
