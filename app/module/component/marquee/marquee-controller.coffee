@@ -14,10 +14,19 @@ module.exports = class MarqueeController extends Controller
 		@__bindInputs()
 		@__bindEvents()
 		@__instantiateItems()
+		@resize()
+
+	resize: ->
+		return undefined if @menuItems is null
+		menuH = @$el.outerHeight()
+		itemH = menuH/@menuItems.length
+		console.log 'marquee resize', menuH, @menuItems.length
+
+		for item in @menuItems
+			item.setHeight itemH
 
 	isOpen: false
 	clickLocked: false
-
 	toggleMenu: =>
 		# console.log 'toggleMenu', @isOpen, @clickLocked
 		return undefined if @clickLocked
@@ -76,8 +85,6 @@ module.exports = class MarqueeController extends Controller
 				model: project
 			options = _.merge defaults, model
 			@menuItems.push(new ItemController options)
-
-		console.log 'MarqueeController: ', @menuItems
 
 	dispose: ->
 		# Workaround for a bug in Chaplin composer:

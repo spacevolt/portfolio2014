@@ -31,6 +31,38 @@
 		"buttonCopy": "view project",
 		"jsonUrl": "/data/project04.json",
 		"menuColor": "green"
+	},{
+		"slug": "project05",
+		"bgImg": "/images/project01/keyart01.jpg",
+		"title": "Stub 5",
+		"description": "Stubby Stub-stub",
+		"buttonCopy": "clicky-click",
+		"jsonUrl": "/data/project01.json",
+		"menuColor": "blue"
+	},{
+		"slug": "project06",
+		"bgImg": "/images/project02/keyart02.jpg",
+		"title": "Stub 6",
+		"description": "Stubby Stub-stub",
+		"buttonCopy": "clicky-click",
+		"jsonUrl": "/data/project02.json",
+		"menuColor": "purple"
+	},{
+		"slug": "project07",
+		"bgImg": "/images/project03/keyart03.jpg",
+		"title": "Stub 7",
+		"description": "Stubby Stub-stub",
+		"buttonCopy": "clicky-click",
+		"jsonUrl": "/data/project03.json",
+		"menuColor": "magenta"
+	},{
+		"slug": "project08",
+		"bgImg": "/images/project04/keyart04.jpg",
+		"title": "Stub 8",
+		"description": "Stubby Stub-stub",
+		"buttonCopy": "clicky-click",
+		"jsonUrl": "/data/project04.json",
+		"menuColor": "aqua"
 	}],
 
 

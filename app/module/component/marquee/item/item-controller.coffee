@@ -5,5 +5,6 @@ module.exports = class ItemController extends Controller
 	className: 'marquee-item'
 	template: require './templates/item'
 
-	resize: ->
-		# ...
+	setHeight: (pxVal)->
+		@$el.css 'height', pxVal+'px'
+		console.log 'setHeight', pxVal
