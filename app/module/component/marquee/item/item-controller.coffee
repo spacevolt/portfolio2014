@@ -7,4 +7,5 @@ module.exports = class ItemController extends Controller
 
 	setHeight: (pxVal)->
 		@$el.css 'height', pxVal+'px'
-		console.log 'setHeight', pxVal
+	clearHeight: ->
+		@$el.css 'height', ''
