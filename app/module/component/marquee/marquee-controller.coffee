@@ -30,7 +30,6 @@ module.exports = class MarqueeController extends Controller
 		numItems = 2 if menuH < medium
 
 		itemH = menuH/numItems
-		console.log 'marquee resize', menuH, numItems
 
 		for item in @menuItems
 			item.setHeight itemH
