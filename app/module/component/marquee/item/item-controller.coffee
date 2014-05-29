@@ -7,5 +7,5 @@ module.exports = class ItemController extends Controller
 
 	setHeight: (pxVal)->
 		@$el.css 'height', pxVal+'px'
-	clearHeight: ->
+	resetHeight: ->
 		@$el.css 'height', ''

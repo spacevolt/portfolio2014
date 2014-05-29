@@ -17,10 +17,20 @@ module.exports = class MarqueeController extends Controller
 		@resize()
 
 	resize: ->
+		@__resizeMenuItems()
+	__resizeMenuItems: ->
 		return undefined if @menuItems is null
+
+		large = 1000
+		medium = 345
 		menuH = @$el.outerHeight()
-		itemH = menuH/@menuItems.length
-		console.log 'marquee resize', menuH, @menuItems.length
+
+		numItems = 8
+		numItems = 5 if menuH < large
+		numItems = 2 if menuH < medium
+
+		itemH = menuH/numItems
+		console.log 'marquee resize', menuH, numItems
 
 		for item in @menuItems
 			item.setHeight itemH
