@@ -20,21 +20,24 @@ module.exports = class MarqueeController extends Controller
 	primeTimeout: undefined
 	resize: ->
 		@__unprimeMenu()
-		@__resizeMenuItems()
+
+		fitAll = if @isOpen then false else true
+		@__resizeMenuItems fitAll
+
 		@__primeMenu()
 	__unprimeMenu: ->
 		clearTimeout @primeTimeout
 		noMenuItems = @menuItems is null
 		notPrimed = @menuPrimed is false
 		return undefined if noMenuItems or notPrimed
-		
+
 		@$el.removeClass 'primed'
 		@menuPrimed = false
 	__primeMenu: ->
 		noMenuItems = @menuItems is null
 		alreadyPrimed = @menuPrimed is true
 		return undefined if noMenuItems or alreadyPrimed
-		
+
 		@primeTimeout = setTimeout =>
 			@$el.addClass 'primed'
 			@menuPrimed = true
@@ -46,9 +49,9 @@ module.exports = class MarqueeController extends Controller
 		medium = 345
 		menuH = @$el.outerHeight()
 
-		numItems = 8
-		numItems = 5 if menuH < large
-		numItems = 2 if menuH < medium
+		numItems = 6 if menuH < large
+		numItems = 4 if menuH < medium
+		numItems = @menuItems.length if fitAll is true
 
 		itemH = menuH/numItems
 
@@ -65,21 +68,27 @@ module.exports = class MarqueeController extends Controller
 		else
 			@closeMenu()
 	openMenu: =>
-		# console.log 'openMenu', @isOpen, @clickLocked
 		if @scheduleMenuClose is true
 			clearTimeout @menuCloseTimeout
 			@scheduleMenuClose = false
 		return undefined if @isOpen or @clickLocked
-		@$el.addClass 'active'
-		@clickLocked = true
-		@isOpen = true
+		@__resizeMenuItems false
+		setTimeout =>
+			@$el.addClass 'active'
+			@clickLocked = true
+			@isOpen = true
+		, 400
 		return undefined
 	closeMenu: =>
-		# console.log 'closeMenu', @isOpen, @clickLocked
 		return undefined if !@isOpen or @clickLocked
 		@$el.removeClass 'active'
 		@clickLocked = true
-		@isOpen = false
+		setTimeout =>
+			@__resizeMenuItems true
+			setTimeout =>
+				@isOpen = false
+			, 400
+		, 400
 		return undefined
 
 	__bindInputs: ->
