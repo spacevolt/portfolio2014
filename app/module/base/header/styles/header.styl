@@ -28,8 +28,17 @@
 		width: 50%
 		text-align: right
 		cursor: pointer
-	.slide-counter
-		float: right
-		padding: 0 10px
-		height: 100%
-		line-height: $nav-height
+
+.project-slide
+	.hud .designer-logo
+		opacity: 0
+		transition: opacity 0.25s ease-in-out
+	&.curr .hud .designer-logo
+		transition: opacity 0.5s ease-out 0.8s
+		opacity: 1
+	.hud .about-link
+		opacity: 0
+		transition: opacity 0.25s ease-in-out
+	&.curr .hud .about-link
+		opacity: 1
+		transition: opacity 0.5s ease-in-out 1.05s
