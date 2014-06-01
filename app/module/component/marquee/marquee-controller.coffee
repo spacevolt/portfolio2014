@@ -16,9 +16,30 @@ module.exports = class MarqueeController extends Controller
 		@__instantiateItems()
 		@resize()
 
+	menuPrimed: false
+	primeTimeout: undefined
 	resize: ->
+		@__unprimeMenu()
 		@__resizeMenuItems()
-	__resizeMenuItems: ->
+		@__primeMenu()
+	__unprimeMenu: ->
+		clearTimeout @primeTimeout
+		noMenuItems = @menuItems is null
+		notPrimed = @menuPrimed is false
+		return undefined if noMenuItems or notPrimed
+		
+		@$el.removeClass 'primed'
+		@menuPrimed = false
+	__primeMenu: ->
+		noMenuItems = @menuItems is null
+		alreadyPrimed = @menuPrimed is true
+		return undefined if noMenuItems or alreadyPrimed
+		
+		@primeTimeout = setTimeout =>
+			@$el.addClass 'primed'
+			@menuPrimed = true
+		, 500
+	__resizeMenuItems: (fitAll)->
 		return undefined if @menuItems is null
 
 		large = 1000
