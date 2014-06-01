@@ -1,5 +1,6 @@
 Controller = require 'base/controller'
 Project = require './project/project-controller'
+About = require 'module/component/about/about-controller'
 
 swipe = require 'util/swipe'
 ev = require 'util/events'
@@ -19,6 +20,7 @@ module.exports = class PortfolioController extends Controller
 	template: require './templates/portfolio'
 
 	attached: ->
+		@__appendAboutPage()
 		@__appendProjectSlides()
 		@__slideToIndex @currentIndex
 		@__primeSlides()
@@ -27,18 +29,15 @@ module.exports = class PortfolioController extends Controller
 	onAboutPage: false
 	aboutLinkClicked: ->
 		if @onAboutPage
-			@flipToCarousel()
+			@slideOutAbout()
 		else
-			@flipToAbout()
-	flipToAbout: ->
-		@$el.addClass('flip')
+			@slideInAbout()
+	slideInAbout: ->
+		@$el.addClass('about')
 		@onAboutPage = true
 		@clickLocked = true
-		setTimeout =>
-			@$('.about-wrapper').css 'display', 'block'
-		, 425
-	flipToCarousel: ->
-		@$el.removeClass('flip')
+	slideOutAbout: ->
+		@$el.removeClass('about')
 		@onAboutPage = false
 		@clickLocked = true
 
@@ -74,7 +73,7 @@ module.exports = class PortfolioController extends Controller
 		# unlock transition events
 		@subscribeEvent ev.mediator.transitionend, @__transitionEnded
 		@subscribeEvent ev.mediator.animationend, @__transitionEnded
-		# 3d-flip carousel
+		# toggle about page
 		@subscribeEvent ev.mediator.header.aboutlink, @aboutLinkClicked
 	__bindSwipe: ->
 		swipeRight = _.bind @prevProject, @
@@ -183,6 +182,9 @@ module.exports = class PortfolioController extends Controller
 		if not @onAboutPage
 			@$('.about-wrapper').css 'display', ''
 
+	__appendAboutPage: ->
+		options = _.merge { container: @$('.about-wrapper') }, @portfolio.about
+		@aboutPage = new About options
 	__appendProjectSlides: ->
 		@slides = []
 		for project, idx in @portfolio.projects
