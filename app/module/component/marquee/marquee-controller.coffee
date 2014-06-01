@@ -45,11 +45,10 @@ module.exports = class MarqueeController extends Controller
 	__resizeMenuItems: (fitAll)->
 		return undefined if @menuItems is null
 
-		large = 1000
-		medium = 345
+		medium = 600
 		menuH = @$el.outerHeight()
 
-		numItems = 6 if menuH < large
+		numItems = 6 if menuH > medium
 		numItems = 4 if menuH < medium
 		numItems = @menuItems.length if fitAll is true
 
@@ -61,7 +60,7 @@ module.exports = class MarqueeController extends Controller
 	isOpen: false
 	clickLocked: false
 	toggleMenu: =>
-		# console.log 'toggleMenu', @isOpen, @clickLocked
+		console.log 'toggleMenu', @isOpen, @clickLocked
 		return undefined if @clickLocked
 		if not @isOpen
 			@openMenu()
@@ -72,15 +71,19 @@ module.exports = class MarqueeController extends Controller
 			clearTimeout @menuCloseTimeout
 			@scheduleMenuClose = false
 		return undefined if @isOpen or @clickLocked
+		console.log 'openMenu', @isOpen, @clickLocked
+		@clickLocked = true
 		@__resizeMenuItems false
 		setTimeout =>
 			@$el.addClass 'active'
-			@clickLocked = true
 			@isOpen = true
 		, 400
 		return undefined
 	closeMenu: =>
+		clearTimeout @menuCloseTimeout
+		@scheduleMenuClose = false
 		return undefined if !@isOpen or @clickLocked
+		console.log 'closeMenu', @isOpen, @clickLocked
 		@$el.removeClass 'active'
 		@clickLocked = true
 		setTimeout =>
@@ -110,7 +113,7 @@ module.exports = class MarqueeController extends Controller
 
 	__transitionEnded: (e)->
 		return false if not (e.target is @$el.get(0))
-		# console.log '__transitionEnded', e.target
+		console.log '__transitionEnded', e.target
 		@clickLocked = false
 
 	__instantiateItems: ->
