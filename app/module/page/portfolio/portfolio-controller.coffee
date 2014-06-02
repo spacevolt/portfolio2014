@@ -25,6 +25,7 @@ module.exports = class PortfolioController extends Controller
 		@__slideToIndex @currentIndex
 		@__primeSlides()
 		@__bindHandlers()
+		@__updateSlug()
 
 	onAboutPage: false
 	aboutLinkClicked: ->
