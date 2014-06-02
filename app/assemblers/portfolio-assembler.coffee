@@ -28,13 +28,16 @@ module.exports = class PortfoliosAssembler extends Assembler
 			portfolio: portfolioData.portfolio
 			projects: portfolioData.projects
 			currentIndex: @__getCurrentSlideIndex()
+			onAboutPage: @options.project is portfolioData.portfolio.about.slug
 		@publishEvent ev.mediator.assembler.carouselready, @
 
 	__getCurrentSlideIndex: ->
 		slideIndex = 0
-		return slideIndex if _.isNull @options.project
-
 		slug = @options.project
+		indexIsAbout = slug is portfolioData.portfolio.about.slug
+
+		return slideIndex if _.isNull @options.project or indexIsAbout
+
 		for project, idx in portfolioData.portfolio.projects
 			slideIndex = idx if project.slug is slug
 		slideIndex

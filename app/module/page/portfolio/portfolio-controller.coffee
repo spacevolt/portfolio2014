@@ -25,6 +25,7 @@ module.exports = class PortfolioController extends Controller
 		@__slideToIndex @currentIndex
 		@__primeSlides()
 		@__bindHandlers()
+		@__initAbout()
 		@__updateSlug()
 
 	onAboutPage: false
@@ -216,6 +217,11 @@ module.exports = class PortfolioController extends Controller
 	__appendAboutPage: ->
 		options = _.merge { container: @$('.about-wrapper') }, @portfolio.about
 		@aboutPage = new About options
+	__initAbout: ->
+		return undefined if @onAboutPage is false
+		@onAboutPage = false
+		@publishEvent ev.mediator.header.aboutlink
+
 	__appendProjectSlides: ->
 		@slides = []
 		for project, idx in @portfolio.projects
