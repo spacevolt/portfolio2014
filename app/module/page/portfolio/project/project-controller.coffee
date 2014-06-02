@@ -15,6 +15,7 @@ module.exports = class ProjectController extends Controller
 		@$el.addClass @slideClass
 		@__instantiateHeader()
 		@__bindProjectButton()
+		@__preventImageDrag()
 
 	__instantiateHeader: ->
 		new Header
@@ -30,6 +31,10 @@ module.exports = class ProjectController extends Controller
 		e.stopPropagation()
 	__loadProjectTemplates: ->
 		console.log 'LOAD PROJECT'
+
+	__preventImageDrag: ->
+		@$('img').on ev.mouse.down, (e)->
+			e.preventDefault()
 
 	debounceDuration: 50
 	resize: ->
