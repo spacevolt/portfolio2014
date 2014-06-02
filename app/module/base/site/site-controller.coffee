@@ -22,7 +22,7 @@ module.exports = class SiteController extends Controller
 		@$('.page-blocker').on ev.all.click, @__pageBlockerClicked
 		@subscribeEvent ev.mediator.menu.open, @__openPageBlocker
 		@subscribeEvent ev.mediator.menu.close, @__closePageBlocker
-	__pageBlockerClicked: ->
+	__pageBlockerClicked: =>
 		@publishEvent ev.mediator.pageblocker.clicked
 	__openPageBlocker: ->
 		@$('.page-blocker').addClass 'active'
