@@ -73,6 +73,7 @@ module.exports = class PortfolioController extends Controller
 
 		history.replaceState null, null, slug
 
+	# Binding/Unbinding Methods
 	__bindHandlers: ->
 		@__bindKeyboard()
 		@__bindCursor()
@@ -82,6 +83,9 @@ module.exports = class PortfolioController extends Controller
 		@subscribeEvent ev.mediator.animationend, @__transitionEnded
 		# toggle about page
 		@subscribeEvent ev.mediator.header.aboutlink, @aboutLinkClicked
+		# Bind to menu open/close
+		@subscribeEvent ev.mediator.menu.open, @__menuOpen
+		@subscribeEvent ev.mediator.menu.close, @__menuClose
 	__bindSwipe: ->
 		swipeRight = _.bind @prevProject, @
 		swipeLeft = _.bind @nextProject, @
@@ -99,6 +103,19 @@ module.exports = class PortfolioController extends Controller
 		@$el.on ev.all.down, @__mouseDown
 		@$el.on ev.all.up, @__mouseUp
 
+	# Menu Open/Close Handlers
+	__menuOpen: ->
+		openScale = 'scaleX(0.85) scaleY(0.85)'
+		@$el.css 'transform', openScale
+		@__unbindSwipe()
+		@__unbindKeyboard()
+	__menuClose: ->
+		closeScale = 'scaleX(1.0) scaleY(1.0)'
+		@$el.css 'transform', closeScale
+		@__bindSwipe()
+		@__bindKeyboard()
+
+	# Keyboard Input Handlers
 	keylocked: false
 	lockedkey: null
 	__keyPressed: (e)=>
@@ -119,6 +136,7 @@ module.exports = class PortfolioController extends Controller
 			@keylocked = false
 		return true
 
+	# Mouse Up/Down Handlers
 	__mouseDown: =>
 		@$el.addClass 'mousedown'
 	__mouseUp: =>

@@ -46,4 +46,11 @@ inputEvents =
 		header:
 			aboutlink: 'header:aboutlink' # Fires when the about link is clicked
 
+		menu:
+			open 	: 'menu:open' # Fires when the menu opens
+			close 	: 'menu:close' # Fires when the menu closes
+
+		pageblocker:
+			clicked : 'pageblocker:clicked' # Fires when the pageblocker is clicked
+
 module.exports = inputEvents

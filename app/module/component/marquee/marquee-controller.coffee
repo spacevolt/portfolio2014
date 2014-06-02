@@ -72,6 +72,7 @@ module.exports = class MarqueeController extends Controller
 			@scheduleMenuClose = false
 		return undefined if @isOpen or @clickLocked
 		# console.log 'openMenu', @isOpen, @clickLocked
+		@publishEvent ev.mediator.menu.open
 		@clickLocked = true
 		@__resizeMenuItems false
 		setTimeout =>
@@ -84,6 +85,7 @@ module.exports = class MarqueeController extends Controller
 		@scheduleMenuClose = false
 		return undefined if !@isOpen or @clickLocked
 		# console.log 'closeMenu', @isOpen, @clickLocked
+		@publishEvent ev.mediator.menu.close
 		@$el.removeClass 'active'
 		@clickLocked = true
 		@isOpen = false
@@ -96,6 +98,7 @@ module.exports = class MarqueeController extends Controller
 		@$el.on ev.all.click, @toggleMenu
 		@$el.on ev.mouse.over, @openMenu
 		@$el.on ev.mouse.leave, @__onMouseLeave
+		@subscribeEvent ev.mediator.pageblocker.clicked, @__onMouseLeave
 
 	scheduleMenuClose: false
 	menuCloseTimeout: null
