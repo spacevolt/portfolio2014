@@ -175,7 +175,16 @@ class Swipe
 		$el
 
 	unbindAll: ->
-		$(window).off @namespace
+		$(window).off '.'+@namespace
+		@mouseBound = false
+		@touchBound = false
+		@__clearLists()
+		@constructor()
+	__clearLists: ->
+		@handlersUp = null
+		@handlersDown = null
+		@handlersRight = null
+		@handlersLeft = null
 
 window.carousel = window.carousel || {}
 window.carousel.swipe = window.carousel.swipe || new Swipe

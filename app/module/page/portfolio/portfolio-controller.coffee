@@ -33,13 +33,19 @@ module.exports = class PortfolioController extends Controller
 		else
 			@slideInAbout()
 	slideInAbout: ->
+		@__unbindSwipe()
+		@__unbindKeyboard()
 		@$el.addClass('about')
 		@onAboutPage = true
 		@clickLocked = true
+		@__updateSlug()
 	slideOutAbout: ->
+		@__bindSwipe()
+		@__bindKeyboard()
 		@$el.removeClass('about')
 		@onAboutPage = false
 		@clickLocked = true
+		@__updateSlug()
 
 	nextProject: ->
 		if @currentIndex is @slides.length-1
@@ -62,6 +68,7 @@ module.exports = class PortfolioController extends Controller
 	__updateSlug: ->
 		return false if not @slides and not device.supports 'history'
 		slug = '#!/'+@slides[@currentIndex].model.get 'slug'
+		slug = '#!/'+@portfolio.about.slug if @onAboutPage is true
 		return false if slug is location.hash
 
 		history.replaceState null, null, slug
@@ -80,9 +87,14 @@ module.exports = class PortfolioController extends Controller
 		swipeLeft = _.bind @nextProject, @
 		swipe.swipeLeft @$el, swipeLeft
 		swipe.swipeRight @$el, swipeRight
+	__unbindSwipe: ->
+		swipe.unbindAll()
 	__bindKeyboard: ->
 		$(document).on ev.all.keydown, @__keyPressed
 		$(document).on ev.all.keyup, @__keyReleased
+	__unbindKeyboard: ->
+		$(document).off ev.all.keydown
+		$(document).off ev.all.keyup
 	__bindCursor: ->
 		@$el.on ev.all.down, @__mouseDown
 		@$el.on ev.all.up, @__mouseUp

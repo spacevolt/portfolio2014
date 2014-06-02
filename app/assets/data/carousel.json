@@ -71,6 +71,7 @@
 	},
 
 	"about" : {
+		"slug": "about",
 		"title": ""
 	}
 }
